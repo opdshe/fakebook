@@ -1,13 +1,13 @@
-package com.fakebook.dongheon.fakebook;
+package com.fakebook.dongheon;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class FakebookApplication {
+public class Application {
 
 	public static void main(String[] args) {
-		SpringApplication.run(FakebookApplication.class, args);
+		SpringApplication.run(Application.class, args);
 	}
 
 }
