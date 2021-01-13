@@ -10,10 +10,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/member")
 public class MemberApiController {
-	private MemberService memberService;
+	private final MemberService memberService;
+
+	public MemberApiController(MemberService memberService) {
+		this.memberService = memberService;
+	}
 
 	@PostMapping("/register")
 	public Long register(@RequestBody MemberRegisterDto dto) {
 		return memberService.register(dto);
+	}
+
+	@PostMapping("/update")
+	public void update(Long id, @RequestBody MemberRegisterDto dto) {
+		memberService.update(id, dto);
 	}
 }

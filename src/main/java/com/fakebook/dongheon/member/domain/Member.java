@@ -1,5 +1,6 @@
 package com.fakebook.dongheon.member.domain;
 
+import com.fakebook.dongheon.member.web.dto.MemberRegisterDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -30,6 +31,14 @@ public class Member {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "gender", nullable = false)
 	private Gender gender;
+
+	public void update(MemberRegisterDto dto) {
+		this.userId = dto.getUserId();
+		this.password = dto.getPassword();
+		this.name = dto.getName();
+		this.birthday = dto.getBirthday();
+		this.gender = dto.getGender();
+	}
 
 	@Builder
 	public Member(String userId, String password, String name, LocalDate birthday, Gender gender) {
