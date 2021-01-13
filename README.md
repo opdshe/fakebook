@@ -50,7 +50,7 @@ Spring boot, JPA, MySQL, H2, Vue.js, Jenkins
 
 
 ## 배포 계획
-1차 배포 : 회원가입, 로그인, 게시글 CRUD, 댓글 CURD, 프로필 (자신이 쓴 글 확인)
+1차 배포 : 회원가입, 로그인, 게시글 CRUD, 댓글 CURD, 프로필 (자신이 쓴 글 확인)  
 2차 배포: 추후 결정
 
 
