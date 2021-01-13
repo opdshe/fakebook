@@ -28,8 +28,14 @@ public class MemberService {
 		member.update(dto);
 	}
 
+	@Transactional
+	public void delete(Long id) {
+		Member member = memberRepository.findById(id);
+		memberRepository.delete(member);
+	}
+
 	private void validateDuplicatedId(String userId) {
-		if (memberRepository.isAlreadyExistUserId(userId)) {
+		if (memberRepository.isExistUserId(userId)) {
 			throw new AlreadyExistMemberIdException();
 		}
 	}

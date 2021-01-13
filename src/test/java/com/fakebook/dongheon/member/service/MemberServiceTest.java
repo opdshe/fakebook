@@ -4,6 +4,7 @@ import com.fakebook.dongheon.member.domain.CustomMemberRepository;
 import com.fakebook.dongheon.member.domain.Gender;
 import com.fakebook.dongheon.member.domain.Member;
 import com.fakebook.dongheon.member.exception.AlreadyExistMemberIdException;
+import com.fakebook.dongheon.member.exception.MemberNotFoundException;
 import com.fakebook.dongheon.member.web.dto.MemberRegisterDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -43,7 +44,7 @@ class MemberServiceTest {
 	}
 
 	@Test
-	void 이미존재하는_Id이면_예외_발생() {
+	void 회원_동록시_이미_존재하는_Id이면_예외_발생() {
 		//given
 		MemberRegisterDto alreadyExistMember = new MemberRegisterDto("duplicatedUserId", "testPw",
 				"dongheon", LocalDate.now(), Gender.MALE);
@@ -92,5 +93,22 @@ class MemberServiceTest {
 		//when & then
 		assertThatExceptionOfType(AlreadyExistMemberIdException.class)
 				.isThrownBy(() -> memberService.update(id, updateMember));
+	}
+
+	@Test
+	void 회원_삭제_동작_확인() {
+		//given
+		String userId = "testID";
+		MemberRegisterDto registerDto = new MemberRegisterDto(userId, "testPw", "dongheon",
+				LocalDate.now(), Gender.MALE);
+		memberService.register(registerDto);
+		Long id = customMemberRepository.findByUserId(userId).getId();
+
+		//when
+		memberService.delete(id);
+
+		//then
+		assertThatExceptionOfType(MemberNotFoundException.class)
+				.isThrownBy(() -> customMemberRepository.findById(id));
 	}
 }

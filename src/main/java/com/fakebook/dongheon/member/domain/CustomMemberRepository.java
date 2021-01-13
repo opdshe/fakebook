@@ -21,11 +21,15 @@ public class CustomMemberRepository {
 				.orElseThrow(MemberNotFoundException::new);
 	}
 
+	public void delete(Member member) {
+		memberRepository.delete(member);
+	}
+
 	public void deleteAll() {
 		memberRepository.deleteAll();
 	}
 
-	public boolean isAlreadyExistUserId(String userId) {
+	public boolean isExistUserId(String userId) {
 		return memberRepository.findAll().stream()
 				.anyMatch(member -> member.getUserId().equals(userId));
 	}
