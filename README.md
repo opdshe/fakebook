@@ -19,6 +19,8 @@ Spring boot, JPA, MySQL, H2, Vue.js, Jenkins
         ...
     }
 ```
+- **웹 통신 로직 테스트는 컨트롤러에서 한다**
+    - **Controller 테스트는 Service 단에서 테스트 하는 것 보다 느리지만, 교육 목적이므로 최대한 실제 환경에서 테스트한다**
 
 
 ## 프로젝트 관리
