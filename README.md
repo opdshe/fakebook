@@ -42,15 +42,22 @@ Spring boot, JPA, MySQL, H2, Vue.js, Jenkins
     
     
 ## 업데이트 주기
-- 1주 단위로 develop -> master 업데이트
+- 매 주 일요일 develop -> master 업데이트
 
 
-## Commit 메세지
+# Git commit 컨벤션
+- Commit messsage 컨벤션 : [Commit message 참고](https://doublesprogramming.tistory.com/256)
 
-- [#{issueNumber}] {commit-type}: {commit-name}
-    - ex) [#115] feat: 게시글 페이징 기능구현
-
-
+- Pull Request Message : [#issueNumber] feat: issueName
+    - ex) [#2] feat: 회원 등록, 조회, 수정, 삭제 기능
+    
+- Merge Commit Message : [Merge] [#issueNumber] feat: issueName
+    - ex) [Merge] [#2] feat: 회원 등록, 조회, 수정, 삭제 기능
+    
+- develop -> master 업데이트 시 Commit : [VO.O.O]
+    - ex) [V1.1.1]
+    
+    
 ## 배포 계획
 1차 배포 : 회원가입, 로그인, 게시글 CRUD, 댓글 CURD, 프로필 (자신이 쓴 글 확인)  
 2차 배포: 추후 결정
