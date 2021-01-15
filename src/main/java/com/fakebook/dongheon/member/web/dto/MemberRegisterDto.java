@@ -4,24 +4,28 @@ import com.fakebook.dongheon.member.domain.Gender;
 import com.fakebook.dongheon.member.domain.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
+@Setter
 @Getter
 @AllArgsConstructor
 public class MemberRegisterDto {
-	private final String userId;
-	private final String password;
-	private final String name;
-	private final LocalDate birthday;
-	private final Gender gender;
+	private String userId;
+	private String password;
+	private String name;
+	private int birthdayYear;
+	private int birthdayMonth;
+	private int birthdayDay;
+	private Gender gender;
 
 	public Member toEntity() {
 		return Member.builder()
 				.userId(userId)
 				.password(password)
 				.name(name)
-				.birthday(birthday)
+				.birthday(LocalDate.of(birthdayYear, birthdayMonth, birthdayDay))
 				.gender(gender)
 				.build();
 	}

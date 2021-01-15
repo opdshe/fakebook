@@ -36,7 +36,7 @@ public class Member {
 		this.userId = dto.getUserId();
 		this.password = dto.getPassword();
 		this.name = dto.getName();
-		this.birthday = dto.getBirthday();
+		this.birthday = LocalDate.of(dto.getBirthdayYear(), dto.getBirthdayMonth(), dto.getBirthdayDay());
 		this.gender = dto.getGender();
 	}
 
