@@ -16,13 +16,13 @@ public class MemberApiController {
 		return memberService.register(dto);
 	}
 
-	@PostMapping("/update")
-	public void update(Long id, @RequestBody MemberRegisterDto dto) {
+	@PostMapping("/update/{id}")
+	public void update(@PathVariable Long id, @RequestBody MemberRegisterDto dto) {
 		memberService.update(id, dto);
 	}
 
-	@DeleteMapping("/delete")
-	public void delete(Long id) {
+	@DeleteMapping("/delete/{id}")
+	public void delete(@PathVariable Long id) {
 		memberService.delete(id);
 	}
 }
