@@ -11,8 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.LocalDate;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
@@ -33,7 +31,7 @@ class MemberServiceTest {
 	void 회원_등록_동작_확인() {
 		//given
 		MemberRegisterDto dto = new MemberRegisterDto("testId", "testPw", "dongheon",
-				LocalDate.now(), Gender.MALE);
+				2021, 1, 15, Gender.MALE);
 
 		//when
 		memberService.register(dto);
@@ -47,9 +45,9 @@ class MemberServiceTest {
 	void 회원_동록시_이미_존재하는_Id이면_예외_발생() {
 		//given
 		MemberRegisterDto alreadyExistMember = new MemberRegisterDto("duplicatedUserId", "testPw",
-				"dongheon", LocalDate.now(), Gender.MALE);
+				"dongheon", 2021, 1, 15, Gender.MALE);
 		MemberRegisterDto duplicatedUserIdMember = new MemberRegisterDto("duplicatedUserId", "1111",
-				"lee", LocalDate.now(), Gender.FEMALE);
+				"lee", 2021, 1, 16, Gender.FEMALE);
 		memberService.register(alreadyExistMember);
 
 		//when & then
@@ -63,9 +61,9 @@ class MemberServiceTest {
 		String userId = "testId";
 		String anotherId = "anotherId";
 		MemberRegisterDto originMember = new MemberRegisterDto(userId, "testPw", "dongheon",
-				LocalDate.now(), Gender.MALE);
+				2021, 1, 15, Gender.MALE);
 		MemberRegisterDto updateMember = new MemberRegisterDto(anotherId, "0000", "lee",
-				LocalDate.now(), Gender.FEMALE);
+				2021, 1, 16, Gender.FEMALE);
 
 		customMemberRepository.save(originMember.toEntity());
 		Long id = customMemberRepository.findByUserId(userId).getId();
@@ -83,9 +81,9 @@ class MemberServiceTest {
 		//given
 		String duplicatedId = "testId";
 		MemberRegisterDto originMember = new MemberRegisterDto(duplicatedId, "testPw", "dongheon",
-				LocalDate.now(), Gender.MALE);
+				2021, 1, 15, Gender.MALE);
 		MemberRegisterDto updateMember = new MemberRegisterDto(duplicatedId, "0000", "lee",
-				LocalDate.now(), Gender.FEMALE);
+				2021, 1, 15, Gender.FEMALE);
 
 		customMemberRepository.save(originMember.toEntity());
 		Long id = customMemberRepository.findByUserId(duplicatedId).getId();
@@ -100,7 +98,7 @@ class MemberServiceTest {
 		//given
 		String userId = "testID";
 		MemberRegisterDto registerDto = new MemberRegisterDto(userId, "testPw", "dongheon",
-				LocalDate.now(), Gender.MALE);
+				2021, 1, 15, Gender.MALE);
 		memberService.register(registerDto);
 		Long id = customMemberRepository.findByUserId(userId).getId();
 

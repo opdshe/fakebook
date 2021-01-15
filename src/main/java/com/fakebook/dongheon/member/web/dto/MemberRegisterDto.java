@@ -13,7 +13,9 @@ public class MemberRegisterDto {
 	private final String userId;
 	private final String password;
 	private final String name;
-	private final LocalDate birthday;
+	private final int birthdayYear;
+	private final int birthdayMonth;
+	private final int birthdayDay;
 	private final Gender gender;
 
 	public Member toEntity() {
@@ -21,7 +23,7 @@ public class MemberRegisterDto {
 				.userId(userId)
 				.password(password)
 				.name(name)
-				.birthday(birthday)
+				.birthday(LocalDate.of(birthdayYear, birthdayMonth, birthdayDay))
 				.gender(gender)
 				.build();
 	}

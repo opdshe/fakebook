@@ -2,16 +2,14 @@ package com.fakebook.dongheon.member.web.controller;
 
 import com.fakebook.dongheon.member.service.MemberService;
 import com.fakebook.dongheon.member.web.dto.MemberRegisterDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
 @RequestMapping("/member")
+@RequiredArgsConstructor
+@RestController
 public class MemberApiController {
 	private final MemberService memberService;
-
-	public MemberApiController(MemberService memberService) {
-		this.memberService = memberService;
-	}
 
 	@PostMapping("/register")
 	public Long register(@RequestBody MemberRegisterDto dto) {
