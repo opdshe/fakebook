@@ -5,6 +5,7 @@ import com.fakebook.dongheon.member.domain.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDate;
 
@@ -12,6 +13,8 @@ import java.time.LocalDate;
 @Getter
 @AllArgsConstructor
 public class MemberRegisterDto {
+	private static final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
 	private String userId;
 	private String password;
 	private String name;
@@ -23,7 +26,7 @@ public class MemberRegisterDto {
 	public Member toEntity() {
 		return Member.builder()
 				.userId(userId)
-				.password(password)
+				.password(passwordEncoder.encode(password))
 				.name(name)
 				.birthday(LocalDate.of(birthdayYear, birthdayMonth, birthdayDay))
 				.gender(gender)

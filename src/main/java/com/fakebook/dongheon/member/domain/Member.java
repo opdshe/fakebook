@@ -6,7 +6,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDate;
 
-@EqualsAndHashCode(exclude = "id")
+@EqualsAndHashCode(exclude = {"id", "password"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity

@@ -6,10 +6,12 @@ import com.fakebook.dongheon.member.domain.Member;
 import com.fakebook.dongheon.member.exception.AlreadyExistMemberIdException;
 import com.fakebook.dongheon.member.exception.MemberNotFoundException;
 import com.fakebook.dongheon.member.web.dto.MemberRegisterDto;
+import com.fakebook.dongheon.security.exception.NotAuthorizedException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -30,12 +32,11 @@ class MemberServiceTest {
 	@Test
 	void 회원_등록_동작_확인() {
 		//given
-		MemberRegisterDto dto = new MemberRegisterDto("testId", "testPw", "dongheon",
-				2021, 1, 15, Gender.MALE);
+		MemberRegisterDto dto = getTestDto();
 
 		//when
 		memberService.register(dto);
-		Member member = customMemberRepository.findByUserId("testId");
+		Member member = customMemberRepository.findByUserId(dto.getUserId());
 
 		//then
 		assertThat(member).isEqualTo(dto.toEntity());
@@ -44,10 +45,8 @@ class MemberServiceTest {
 	@Test
 	void 회원_동록시_이미_존재하는_Id이면_예외_발생() {
 		//given
-		MemberRegisterDto alreadyExistMember = new MemberRegisterDto("duplicatedUserId", "testPw",
-				"dongheon", 2021, 1, 15, Gender.MALE);
-		MemberRegisterDto duplicatedUserIdMember = new MemberRegisterDto("duplicatedUserId", "1111",
-				"lee", 2021, 1, 16, Gender.FEMALE);
+		MemberRegisterDto alreadyExistMember = getTestDto();
+		MemberRegisterDto duplicatedUserIdMember = getTestDto();
 		memberService.register(alreadyExistMember);
 
 		//when & then
@@ -58,15 +57,13 @@ class MemberServiceTest {
 	@Test
 	void 회원정보_수정_동작_확인() {
 		//given
-		String userId = "testId";
 		String anotherId = "anotherId";
-		MemberRegisterDto originMember = new MemberRegisterDto(userId, "testPw", "dongheon",
-				2021, 1, 15, Gender.MALE);
-		MemberRegisterDto updateMember = new MemberRegisterDto(anotherId, "0000", "lee",
-				2021, 1, 16, Gender.FEMALE);
+		MemberRegisterDto originMember = getTestDto();
+		MemberRegisterDto updateMember = getTestDto();
+		updateMember.setUserId(anotherId);
 
 		customMemberRepository.save(originMember.toEntity());
-		Long id = customMemberRepository.findByUserId(userId).getId();
+		Long id = customMemberRepository.findByUserId(originMember.getUserId()).getId();
 
 		//when
 		memberService.update(id, updateMember);
@@ -80,11 +77,8 @@ class MemberServiceTest {
 	void 회원정보_수정시_중복되는_ID는_예외발생() {
 		//given
 		String duplicatedId = "testId";
-		MemberRegisterDto originMember = new MemberRegisterDto(duplicatedId, "testPw", "dongheon",
-				2021, 1, 15, Gender.MALE);
-		MemberRegisterDto updateMember = new MemberRegisterDto(duplicatedId, "0000", "lee",
-				2021, 1, 15, Gender.FEMALE);
-
+		MemberRegisterDto originMember = getTestDto();
+		MemberRegisterDto updateMember = getTestDto();
 		customMemberRepository.save(originMember.toEntity());
 		Long id = customMemberRepository.findByUserId(duplicatedId).getId();
 
@@ -93,14 +87,13 @@ class MemberServiceTest {
 				.isThrownBy(() -> memberService.update(id, updateMember));
 	}
 
+	@WithMockUser(username = "testID")
 	@Test
 	void 회원_삭제_동작_확인() {
 		//given
-		String userId = "testID";
-		MemberRegisterDto registerDto = new MemberRegisterDto(userId, "testPw", "dongheon",
-				2021, 1, 15, Gender.MALE);
+		MemberRegisterDto registerDto = getTestDto();
 		memberService.register(registerDto);
-		Long id = customMemberRepository.findByUserId(userId).getId();
+		Long id = customMemberRepository.findByUserId(registerDto.getUserId()).getId();
 
 		//when
 		memberService.delete(id);
@@ -108,5 +101,30 @@ class MemberServiceTest {
 		//then
 		assertThatExceptionOfType(MemberNotFoundException.class)
 				.isThrownBy(() -> customMemberRepository.findById(id));
+	}
+
+	@WithMockUser(username = "invalidUserID")
+	@Test
+	public void 삭제하려는_대상이_로그인된_사용자가_아니면_삭제할_수_없다() {
+		//given
+		MemberRegisterDto registerDto = getTestDto();
+		memberService.register(registerDto);
+		Long id = customMemberRepository.findByUserId(registerDto.getUserId()).getId();
+
+		//when & then
+		assertThatExceptionOfType(NotAuthorizedException.class)
+				.isThrownBy(() -> memberService.delete(id));
+	}
+
+	private static MemberRegisterDto getTestDto() {
+		String userID = "testID";
+		String password = "testPW";
+		String name = "이동헌";
+		int birthdayYear = 1995;
+		int birthdayMonth = 8;
+		int birthdayDay = 22;
+		Gender gender = Gender.MALE;
+		return new MemberRegisterDto(userID, password, name, birthdayYear, birthdayMonth,
+				birthdayDay, gender);
 	}
 }

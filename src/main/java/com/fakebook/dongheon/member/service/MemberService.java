@@ -4,6 +4,9 @@ import com.fakebook.dongheon.member.domain.CustomMemberRepository;
 import com.fakebook.dongheon.member.domain.Member;
 import com.fakebook.dongheon.member.exception.AlreadyExistMemberIdException;
 import com.fakebook.dongheon.member.web.dto.MemberRegisterDto;
+import com.fakebook.dongheon.security.exception.NotAuthorizedException;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,8 +33,20 @@ public class MemberService {
 
 	@Transactional
 	public void delete(Long id) {
+		validateAuthority(id);
 		Member member = memberRepository.findById(id);
 		memberRepository.delete(member);
+	}
+
+	private void validateAuthority(Long id) {
+		UserDetails loginUser = (UserDetails) SecurityContextHolder.getContext()
+				.getAuthentication()
+				.getPrincipal();
+		String loginUserId = loginUser.getUsername();
+		Member targetMember = memberRepository.findById(id);
+		if (!loginUserId.equals(targetMember.getUserId())) {
+			throw new NotAuthorizedException();
+		}
 	}
 
 	private void validateDuplicatedId(String userId) {
