@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -35,6 +36,8 @@ class MemberApiControllerTest {
 	private int port;
 
 	private static MockMvc mvc;
+
+	private static final String userId = "testID";
 
 	@BeforeAll
 	public void setUp() {
@@ -65,6 +68,7 @@ class MemberApiControllerTest {
 		assertThat(isExistUserId).isTrue();
 	}
 
+	@WithMockUser(username = userId)
 	@Test
 	void Member_삭제_기능_컨트롤러_테스트() throws Exception {
 		//given
@@ -114,7 +118,7 @@ class MemberApiControllerTest {
 	}
 
 	private static MemberRegisterDto getTestDto() {
-		String userID = "testID";
+		String userID = userId;
 		String password = "testPW";
 		String name = "이동헌";
 		int birthdayYear = 1995;
