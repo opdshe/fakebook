@@ -19,6 +19,18 @@ Spring boot, JPA, MySQL, H2, Vue.js, Jenkins
         ...
     }
 ```
+- **웹 통신 로직 테스트는 Service, Controller 둘 다 한다**
+    - **실무가 아닌 교육 목적이므로 최대한 꼼꼼하게 테스트한다**
+    - Service 수준 
+        - 비즈니스 로직 확인
+        - 예외 처리 확인
+    - Controller 수준
+        - 실제 요청이 올바르게 작동하는지 확인
+
+# Jpa 관련 컨벤션
+- Fetch 전략은 EAGER가 아닌 **LAZY**사용 (N+1 문제 해결)
+- EntityGraph 적용하여 필요에 따라 한 번에 fetch 한다
+- Auditing을 사용하여 모든 테이블의 등록일, 수정일 정보를 관리한다
 
 
 ## 프로젝트 관리
@@ -42,15 +54,24 @@ Spring boot, JPA, MySQL, H2, Vue.js, Jenkins
     
     
 ## 업데이트 주기
-- 1주 단위로 develop -> master 업데이트
+- 매 주 일요일 develop -> master 업데이트
 
 
-## Commit 메세지
+# Git commit 컨벤션
+[Commit message 참고](https://doublesprogramming.tistory.com/256)
+- Commit messsage 컨벤션 : [#issueNumber] feat: issueName
+    - ex) [#2] feat: 회원 등록, 조회, 수정, 삭제 기능
 
-- [#{issueNumber}] {commit-type}: {commit-name}
-    - ex) [#115] feat: 게시글 페이징 기능구현
-
-
+- Pull Request Message : [#issueNumber] feat: issueName
+    - ex) [#2] feat: 회원 등록, 조회, 수정, 삭제 기능
+    
+- Merge Commit Message : [Merge] [#issueNumber] feat: issueName
+    - ex) [Merge] [#2] feat: 회원 등록, 조회, 수정, 삭제 기능
+    
+- develop -> master 업데이트 시 Commit : [VO.O.O]
+    - ex) [V1.1.1]
+    
+    
 ## 배포 계획
 1차 배포 : 회원가입, 로그인, 게시글 CRUD, 댓글 CURD, 프로필 (자신이 쓴 글 확인)  
 2차 배포: 추후 결정
@@ -62,11 +83,16 @@ Spring boot, JPA, MySQL, H2, Vue.js, Jenkins
 
 ## 진행 상황
 - [x] 로컬 데이터 베이스 연동
-- [ ] 회원 등록, 조회, 수정,삭제 기능
-- [ ] 로그인 기능
-- [ ] 로그인 페이지 작성
+- [x] 회원 등록, 조회, 수정, 삭제 기능
+    - 회원 등록 시 ID가 중복되면 예외 발생
+    - 회원 정보 수정 시 변경 하려는 ID가 이미 존재하는 ID면 예외 발생
+    - 삭제하려는 회원이 현재 로그인 된 사용자가 아니면 삭제할 수 없다
+- [x] 로그인 기능
+- [x] 로그인 페이지 작성
 - [ ] 피드 페이지 작성
-- [ ] 게시글 등록, 조회, 수정,삭제 기능
+- [x] 게시글 등록, 조회, 수정,삭제 기능
+    - 게시글 등록 시 자신의 명의로만 글을 작성할 수 있다(타인 계정으로 작성 요청 불가능)
+    - 게시글 삭제 및 수정 시 자신의 글이 아니면 변경 요청할 수 없다
 - [ ] 댓글 등록, 조회, 수정,삭제 기능
 - [ ] 프로필 페이지 작성
 - [ ] 친구 추가 기능
