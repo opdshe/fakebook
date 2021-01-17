@@ -1,16 +1,17 @@
 package com.fakebook.dongheon.member.domain;
 
+import com.fakebook.dongheon.JpaBaseEntity;
 import com.fakebook.dongheon.member.web.dto.MemberRegisterDto;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
-@EqualsAndHashCode(exclude = {"id", "password"})
+@EqualsAndHashCode(exclude = {"id", "password"}, callSuper = false)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-public class Member {
+public class Member extends JpaBaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "member_id")
