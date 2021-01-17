@@ -19,7 +19,7 @@ Spring boot, JPA, MySQL, H2, Vue.js, Jenkins
         ...
     }
 ```
-- **웹 통신 로직 테스트는 Service, Controller 둘  한다**
+- **웹 통신 로직 테스트는 Service, Controller 둘 다 한다**
     - **실무가 아닌 교육 목적이므로 최대한 꼼꼼하게 테스트한다**
     - Service 수준 
         - 비즈니스 로직 확인
@@ -58,7 +58,9 @@ Spring boot, JPA, MySQL, H2, Vue.js, Jenkins
 
 
 # Git commit 컨벤션
-- Commit messsage 컨벤션 : [Commit message 참고](https://doublesprogramming.tistory.com/256)
+[Commit message 참고](https://doublesprogramming.tistory.com/256)
+- Commit messsage 컨벤션 : [#issueNumber] feat: issueName
+    - ex) [#2] feat: 회원 등록, 조회, 수정, 삭제 기능
 
 - Pull Request Message : [#issueNumber] feat: issueName
     - ex) [#2] feat: 회원 등록, 조회, 수정, 삭제 기능
