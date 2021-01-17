@@ -26,6 +26,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class MemberApiControllerTest {
+	private static final String USER_ID = "testID";
+
 	@Autowired
 	WebApplicationContext context;
 
@@ -36,8 +38,6 @@ class MemberApiControllerTest {
 	private int port;
 
 	private static MockMvc mvc;
-
-	private static final String userId = "testID";
 
 	@BeforeAll
 	public void setUp() {
@@ -68,7 +68,7 @@ class MemberApiControllerTest {
 		assertThat(isExistUserId).isTrue();
 	}
 
-	@WithMockUser(username = userId)
+	@WithMockUser(username = USER_ID)
 	@Test
 	void Member_삭제_기능_컨트롤러_테스트() throws Exception {
 		//given
@@ -118,7 +118,7 @@ class MemberApiControllerTest {
 	}
 
 	private static MemberRegisterDto getTestDto() {
-		String userID = userId;
+		String userID = USER_ID;
 		String password = "testPW";
 		String name = "이동헌";
 		int birthdayYear = 1995;

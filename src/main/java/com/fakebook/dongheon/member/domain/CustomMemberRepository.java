@@ -1,15 +1,13 @@
 package com.fakebook.dongheon.member.domain;
 
 import com.fakebook.dongheon.member.exception.MemberNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+@RequiredArgsConstructor
 @Repository
 public class CustomMemberRepository {
 	public final MemberRepository memberRepository;
-
-	public CustomMemberRepository(MemberRepository memberRepository) {
-		this.memberRepository = memberRepository;
-	}
 
 	public Member findByUserId(String userId) {
 		return memberRepository.findByUserId(userId)
