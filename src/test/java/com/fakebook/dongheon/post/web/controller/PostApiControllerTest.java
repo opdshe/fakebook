@@ -2,7 +2,9 @@ package com.fakebook.dongheon.post.web.controller;
 
 import com.fakebook.dongheon.member.domain.CustomMemberRepository;
 import com.fakebook.dongheon.member.domain.Member;
+import com.fakebook.dongheon.member.web.dto.MemberRegisterDto;
 import com.fakebook.dongheon.post.domain.CustomPostRepository;
+import com.fakebook.dongheon.post.service.PostService;
 import com.fakebook.dongheon.post.web.dto.PostRegisterDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
@@ -20,12 +22,17 @@ import static com.fakebook.dongheon.member.service.MemberServiceTest.getTestMemb
 import static com.fakebook.dongheon.post.service.PostServiceTest.getTestPostRegisterDto;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class PostApiControllerTest {
-	private static final String USER_ID = "testId";
+	private static final String MY_ACCOUNT_ID = "myAccount";
+	private static final String ANOTHER_PERSON_ACCOUNT_ID = "notMyAccount";
+
+	private static Member myAccount;
+	private static Member anotherPersonAccount;
 
 	@Autowired
 	WebApplicationContext context;
@@ -35,6 +42,9 @@ class PostApiControllerTest {
 
 	@Autowired
 	private CustomMemberRepository customMemberRepository;
+
+	@Autowired
+	private PostService postService;
 
 	@LocalServerPort
 	private int port;
@@ -48,8 +58,15 @@ class PostApiControllerTest {
 				.apply(springSecurity())
 				.build();
 
-		Member testMember = getTestMemberDto().toEntity();
-		customMemberRepository.save(testMember);
+		MemberRegisterDto memberDto = getTestMemberDto();
+		memberDto.setUserId(MY_ACCOUNT_ID);
+		myAccount = memberDto.toEntity();
+
+		memberDto.setUserId(ANOTHER_PERSON_ACCOUNT_ID);
+		anotherPersonAccount = memberDto.toEntity();
+
+		customMemberRepository.save(myAccount);
+		customMemberRepository.save(anotherPersonAccount);
 	}
 
 	@AfterEach
@@ -62,7 +79,7 @@ class PostApiControllerTest {
 		customMemberRepository.deleteAll();
 	}
 
-	@WithMockUser(username = USER_ID)
+	@WithMockUser(username = MY_ACCOUNT_ID)
 	@Test
 	void Post_등록_컨트롤러_테스트() throws Exception {
 		//given
@@ -78,5 +95,20 @@ class PostApiControllerTest {
 
 		//then
 		assertThat(isExistPost).isTrue();
+	}
+
+	@WithMockUser(username = MY_ACCOUNT_ID)
+	@Test
+	void Post_삭제_컨트롤러_테스트() throws Exception {
+		//given
+		PostRegisterDto dto = getTestPostRegisterDto();
+		Long postId = postService.register(dto, MY_ACCOUNT_ID);
+
+		//when
+		mvc.perform(delete("/post/delete/{id}", postId));
+		boolean isExist = customPostRepository.isExistPost(postId);
+
+		//then
+		assertThat(isExist).isFalse();
 	}
 }
