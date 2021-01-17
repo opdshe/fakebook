@@ -30,6 +30,14 @@ public class PostService {
 		customPostRepository.delete(post);
 	}
 
+	@Transactional
+	public void update(Long id, PostRegisterDto dto, String loginUserId) {
+		Post post = customPostRepository.findById(id);
+		Member loginUser = customMemberRepository.findByUserId(loginUserId);
+		validateAuthority(post, loginUser);
+		post.update(dto);
+	}
+
 	private static void validateAuthority(Post post, Member loginUser) {
 		if (post.getMember() != loginUser) {
 			throw new NotAuthorizedException();

@@ -24,10 +24,6 @@ public class PostServiceTest {
 	private static final String MY_ACCOUNT_ID = "myAccount";
 	private static final String ANOTHER_PERSON_ACCOUNT_ID = "yourAccount";
 
-	private static Member myAccount;
-
-	private static Member anotherPersonAccount;
-
 	@Autowired
 	private CustomMemberRepository customMemberRepository;
 
@@ -41,10 +37,10 @@ public class PostServiceTest {
 	void initMemberRepository() {
 		MemberRegisterDto memberDto = getTestMemberDto();
 		memberDto.setUserId(MY_ACCOUNT_ID);
-		myAccount = memberDto.toEntity();
+		Member myAccount = memberDto.toEntity();
 
 		memberDto.setUserId(ANOTHER_PERSON_ACCOUNT_ID);
-		anotherPersonAccount = memberDto.toEntity();
+		Member anotherPersonAccount = memberDto.toEntity();
 
 		customMemberRepository.save(myAccount);
 		customMemberRepository.save(anotherPersonAccount);
@@ -101,10 +97,44 @@ public class PostServiceTest {
 
 		//when & then
 		assertThatExceptionOfType(NotAuthorizedException.class)
-				.isThrownBy(() -> postService.delete(id, MY_ACCOUNT_ID));
+				.isThrownBy(() -> postService.delete(id, getLoginUserId()));
 	}
 
-	private String getLoginUserId() {
+	@WithMockUser(username = MY_ACCOUNT_ID)
+	@Test
+	void Post_수정_동작_확인() {
+		//given
+		PostRegisterDto originDto = getTestPostRegisterDto();
+		PostRegisterDto updateDto = getTestPostRegisterDto();
+		updateDto.setContent("update Content");
+
+		Long postId = postService.register(originDto, getLoginUserId());
+
+		//when
+		postService.update(postId, updateDto, getLoginUserId());
+		Post post = customPostRepository.findById(postId);
+
+		//then
+		assertThat(post.getContent()).isEqualTo(updateDto.getContent());
+	}
+
+	@WithMockUser(username = MY_ACCOUNT_ID)
+	@Test
+	void 수정하려는_게시글의_작성자가_수정을_요청한_유저가_아니면_삭제_할_수_없다() {
+		//given
+		String realPostWriterId = ANOTHER_PERSON_ACCOUNT_ID;
+		PostRegisterDto originDto = getTestPostRegisterDto();
+		PostRegisterDto updateDto = getTestPostRegisterDto();
+		updateDto.setContent("update Content");
+
+		Long id = postService.register(originDto, realPostWriterId);
+
+		//when & then
+		assertThatExceptionOfType(NotAuthorizedException.class)
+				.isThrownBy(() -> postService.update(id, updateDto, getLoginUserId()));
+	}
+
+	public static String getLoginUserId() {
 		UserDetails loginUser = (UserDetails) SecurityContextHolder.getContext()
 				.getAuthentication()
 				.getPrincipal();

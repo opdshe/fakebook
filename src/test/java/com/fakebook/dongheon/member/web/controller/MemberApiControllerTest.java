@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -26,16 +25,16 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class MemberApiControllerTest {
-	private static final String USER_ID = "testID";
+	private static final String MY_ACCOUNT_ID = "myAccount";
+	private static final String REGISTER_URL = "/member/register";
+	private static final String DELETE_URL = "/member/delete";
+	private static final String UPDATE_URL = "/member/update";
 
 	@Autowired
 	WebApplicationContext context;
 
 	@Autowired
 	private CustomMemberRepository customMemberRepository;
-
-	@LocalServerPort
-	private int port;
 
 	private static MockMvc mvc;
 
@@ -56,7 +55,7 @@ class MemberApiControllerTest {
 		//given
 		MemberRegisterDto dto = getTestDto();
 		String memberJson = new ObjectMapper().writeValueAsString(dto);
-		String url = "http://localhost:" + port + "/member/register";
+		String url = "/member/register";
 
 		//when
 		mvc.perform(post(url)
@@ -68,15 +67,13 @@ class MemberApiControllerTest {
 		assertThat(isExistUserId).isTrue();
 	}
 
-	@WithMockUser(username = USER_ID)
+	@WithMockUser(username = MY_ACCOUNT_ID)
 	@Test
 	void Member_삭제_기능_컨트롤러_테스트() throws Exception {
 		//given
 		MemberRegisterDto dto = getTestDto();
 		String memberJson = new ObjectMapper().writeValueAsString(dto);
-		String registerUrl = "http://localhost:" + port + "/member/register";
-		String deleteUrl = "http://localhost:" + port + "/member/delete";
-		MvcResult result = mvc.perform(post(registerUrl)
+		MvcResult result = mvc.perform(post(REGISTER_URL)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(memberJson))
 				.andReturn();
@@ -84,7 +81,7 @@ class MemberApiControllerTest {
 		long id = Long.parseLong(result.getResponse().getContentAsString());
 
 		//when
-		mvc.perform(delete(deleteUrl + "/{id}", id));
+		mvc.perform(delete(DELETE_URL + "/{id}", id));
 		boolean isExistUserId = customMemberRepository.isExistUserId(dto.getUserId());
 
 		//then
@@ -99,16 +96,14 @@ class MemberApiControllerTest {
 		String editedUserId = "editedUserID";
 		editedDto.setUserId(editedUserId);
 
-		String registerUrl = "http://localhost:" + port + "/member/register";
-		String updateUrl = "http://localhost:" + port + "/member/update";
-		MvcResult result = mvc.perform(post(registerUrl)
+		MvcResult result = mvc.perform(post(REGISTER_URL)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(new ObjectMapper().writeValueAsString(origin)))
 				.andReturn();
 		long id = Long.parseLong(result.getResponse().getContentAsString());
 
 		//when
-		mvc.perform(post(updateUrl + "/{id}", id)
+		mvc.perform(post(UPDATE_URL + "/{id}", id)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(new ObjectMapper().writeValueAsString(editedDto)));
 		Member editedMember = customMemberRepository.findById(id);
@@ -118,7 +113,7 @@ class MemberApiControllerTest {
 	}
 
 	private static MemberRegisterDto getTestDto() {
-		String userID = USER_ID;
+		String userID = MY_ACCOUNT_ID;
 		String password = "testPW";
 		String name = "이동헌";
 		int birthdayYear = 1995;

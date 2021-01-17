@@ -23,4 +23,10 @@ public class PostApiController {
 		String loginUserId = principal.getName();
 		postService.delete(id, loginUserId);
 	}
+
+	@PostMapping("/post/update/{id}")
+	public void update(@PathVariable Long id, @RequestBody PostRegisterDto dto, Principal principal) {
+		String loginUserId = principal.getName();
+		postService.update(id, dto, loginUserId);
+	}
 }
