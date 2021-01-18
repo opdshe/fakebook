@@ -26,13 +26,14 @@ Vue.component('upper-nav-bar', {
         '                <a>\n' +
         '                    <img class="profile-img img-fluid" src="/images/default/profile-default.png" alt="">\n' +
         '                    <div class="user-info mrg-left-5">\n' +
-        '                        <span class="name pdd-right-5 text-white text-bold">{{username}}</span>\n' +
+        '                        <span class="name pdd-right-5 text-white text-bold"' +
+        '                           onclick="location.href=\'/mypage\'" style=" cursor: pointer">{{username}}</span>\n' +
         '                    </div>\n' +
         '                </a>\n' +
         '            </li>\n' +
         '            <li class="">\n' +
-        '                <a class="pointer">\n' +
-        '                    <span class="text-white text-bold font-size-12">홈</span>\n' +
+        '                <a class="pointer" href="/logout">\n' +
+        '                    <span class="text-white text-bold font-size-12">로그아웃</span>\n' +
         '                </a>\n' +
         '            </li>\n' +
         '            <li>\n' +
