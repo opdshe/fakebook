@@ -69,7 +69,7 @@ Vue.component('post', {
             })
         }
     },
-    props: ['post', 'username'],
+    props: ['post'],
     template:
         '<div class="card widget-feed padding-15">\n' +
         '    <div class="feed-header">\n' +
@@ -77,7 +77,7 @@ Vue.component('post', {
         '            <li>\n' +
         '                <img class="thumb-img img-circle" src="/images/default/profile-default.png" alt="">\n' +
         '                <div class="info">\n' +
-        '                    <a href="" class="title no-pdd-vertical text-semibold inline-block">{{username}}</a>\n' +
+        '                    <a href="" class="title no-pdd-vertical text-semibold inline-block">{{post.poster}}</a>\n' +
         '                    <span></span>\n' +
         '                    <span class="sub-title">15시간</span>\n' +
         '                    <a class="pointer absolute top-0 right-0" data-toggle="dropdown"\n' +

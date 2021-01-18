@@ -7,13 +7,15 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 public class PostResponseDto {
 	private final Long id;
 	private final String content;
+	private final String poster;
 
-	public PostResponseDto(Long id, String content) {
+	public PostResponseDto(Long id, String content, String poster) {
 		this.id = id;
 		this.content = content;
+		this.poster = poster;
 	}
 
 	public static PostResponseDto of(Post post) {
-		return new PostResponseDto(post.getId(), post.getContent());
+		return new PostResponseDto(post.getId(), post.getContent(), post.getMember().getName());
 	}
 }
