@@ -165,12 +165,12 @@ Vue.component('Post', {
 
 //게시물 작성 카드
 Vue.component('post-register-card', {
-    props: ['placeholder', 'username'],
+    props: ['placeholder', 'postContent'],
     template:
         '<div class="card widget-compose" id="post-card">\n' +
         '    <p class="border bottom width-100 pdd-btm-5 text-bold">게시물 만들기</p>\n' +
         '    <textarea class="resize-none form-control border bottom resize-none"' +
-        '       v-bind:placeholder="placeholder"></textarea>\n' +
+        '       v-bind:placeholder="placeholder" v-model= "postContent"></textarea>\n' +
         '    <ul class="composor-tools pdd-top-15">\n' +
         '        <li class="bg-lightgray border-radius-round mrg-right-5">\n' +
         '            <a class="pdd-vertical-5 pdd-horizon-10 pointer">\n' +
@@ -194,18 +194,16 @@ Vue.component('post-register-card', {
         '    </ul>\n' +
         '</div>',
     methods: {
-        methods: {
-            register: function (e) {
-                axios.post("/post/register", {
-                    content: this.content
-                }).then(function (response) {
-                    console.log(response);
-                    alert("게시물을 작성했습니다. ");
-                    window.location.reload();
-                }).catch(function (error) {
-                    console.log(error);
-                });
-            }
+        register: function (e) {
+            axios.post("/post/register", {
+                content: this.postContent
+            }).then(function (response) {
+                console.log(response);
+                alert("게시물을 작성했습니다. ");
+                window.location.reload();
+            }).catch(function (error) {
+                console.log(error);
+            });
         }
     }
 })
