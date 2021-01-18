@@ -1,5 +1,6 @@
 package com.fakebook.dongheon.security;
 
+import com.fakebook.dongheon.security.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -31,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.formLogin()
 				.loginPage("/")
 				.loginProcessingUrl("/login")
-				.defaultSuccessUrl("/success")
+				.defaultSuccessUrl("/feed")
 				.failureUrl("/failure")
 				.and()
 				.logout();
