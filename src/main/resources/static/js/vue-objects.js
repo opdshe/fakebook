@@ -56,7 +56,7 @@ Vue.component('upper-nav-bar', {
 
 
 //게시글 객체
-Vue.component('Post', {
+Vue.component('post', {
     methods: {
         deletePost: function (postId) {
             axios.delete("/post/delete/" + postId)
@@ -99,9 +99,7 @@ Vue.component('Post', {
         '        </ul>\n' +
         '   </div>\n' +
         '   <div class="feed-body no-pdd">\n' +
-        '       <p>\n' +
-        '           <span> {{post.content}} </span> <br>\n' +
-        '       </p>\n' +
+        '       <div dir="auto" style="text-align:start">{{post.content}}</div>\n' +
         '   </div>\n' +
         '   <ul class="feed-action pdd-btm-5 border bottom">\n' +
         '       <li>\n' +

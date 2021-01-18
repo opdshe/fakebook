@@ -32,9 +32,9 @@
                 <div class="left">
                     <div class="left-profile">
                         <a class="pointer">
-                            <img class="img-circle width-25px" src="/images/default/eastjun_profile.jpg">
+                            <img class="img-circle width-25px" src="/images/default/profile-default.png">
                             <div class="left-name-edit pointer">
-                                <a class="left-name">eastjun</a>
+                                <a class="left-name">{{username}}</a>
                             </div>
                         </a>
                     </div>
@@ -57,9 +57,14 @@
                             <div class="left-group-title">바로가기</div>
                             <li class="left-sub-sub-menus pointer">
                                 <div class="icons group"></div>
-                                <span class="icon-name">  우테코 1기</span>
+                                <span class="icon-name">  알고리즘 스터디</span>
+                            </li>
+                            <li class="left-sub-sub-menus pointer">
+                                <div class="icons group"></div>
+                                <span class="icon-name">  이동헌과 친구들</span>
                             </li>
                         </ul>
+
                     </div>
                 </div>
             </div>
@@ -69,6 +74,7 @@
                     <post-register-card v-bind:username="username"
                                         v-bind:placeholder="placeholder"></post-register-card>
                 </div>
+                <!-------------유툽 게시글 ------------>
                 <div class="card widget-feed padding-15">
                     <div class="feed-header">
                         <ul class="list-unstyled list-info">
@@ -161,6 +167,12 @@
                         </div>
                     </div>
                 </div>
+                <!----------------------게시글 ------------------------->
+                <post v-for="post in posts"
+                      v-bind:key="post.id"
+                      v-bind:post="post"
+                      v-bind:username="username">
+                </post>
             </div>
             <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 pdd-right-0">
                 <div class="card">
@@ -175,6 +187,15 @@
                                        class="title no-pdd-vertical text-semibold inline-block text-bold text-link-color">스토리에
                                         추가</a>
                                     <span class="sub-title">사진, 동영상을 공유하거나 글을 남겨보세요</span>
+                                </div>
+                            </li>
+                            <li class="story-user-list mrg-btm-10">
+                                <img class="thumb-img img-circle img-circle-blue"
+                                     src="/images/default/dongheon.jpeg" alt="">
+                                <div class="info mrg-left-5 pdd-top-5">
+                                    <a href=""
+                                       class="title no-pdd-vertical text-semibold inline-block text-bold">이동헌</a>
+                                    <span class="sub-title">18시간전</span>
                                 </div>
                             </li>
                             <li class="story-user-list mrg-btm-10">
