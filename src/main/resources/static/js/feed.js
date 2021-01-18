@@ -5,7 +5,6 @@ var feed = new Vue({
     data: {
         username: '',
         placeholder: '',
-        postContent: ''
     }
 })
 
