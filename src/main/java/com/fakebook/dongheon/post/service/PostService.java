@@ -5,10 +5,15 @@ import com.fakebook.dongheon.member.domain.Member;
 import com.fakebook.dongheon.post.domain.CustomPostRepository;
 import com.fakebook.dongheon.post.domain.Post;
 import com.fakebook.dongheon.post.web.dto.PostRegisterDto;
+import com.fakebook.dongheon.post.web.dto.PostResponseDto;
 import com.fakebook.dongheon.security.exception.NotAuthorizedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -36,6 +41,14 @@ public class PostService {
 		Member loginUser = customMemberRepository.findByUserId(loginUserId);
 		validateAuthority(post, loginUser);
 		post.update(dto);
+	}
+
+	@Transactional
+	public List<PostResponseDto> findAllSortByPostDate() {
+		return customPostRepository.findAll().stream()
+				.sorted(Comparator.comparing(Post::getPostDate).reversed())
+				.map(PostResponseDto::of)
+				.collect(Collectors.toList());
 	}
 
 	private static void validateAuthority(Post post, Member loginUser) {

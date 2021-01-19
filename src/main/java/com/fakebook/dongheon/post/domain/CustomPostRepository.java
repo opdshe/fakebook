@@ -4,10 +4,16 @@ import com.fakebook.dongheon.post.exception.PostNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Repository
 public class CustomPostRepository {
 	private final PostRepository postRepository;
+
+	public List<Post> findAll() {
+		return postRepository.findAll();
+	}
 
 	public Post findById(Long id) {
 		return postRepository.findById(id)
