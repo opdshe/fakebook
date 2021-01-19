@@ -7,6 +7,7 @@ import com.fakebook.dongheon.member.domain.CustomMemberRepository;
 import com.fakebook.dongheon.member.domain.Member;
 import com.fakebook.dongheon.post.domain.CustomPostRepository;
 import com.fakebook.dongheon.post.domain.Post;
+import com.fakebook.dongheon.security.exception.NotAuthorizedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,5 +25,19 @@ public class CommentService {
 		Post post = customPostRepository.findWithCommentsById(postId);
 		Comment comment = dto.toEntity(post, loginUser);
 		return customCommentRepository.save(comment).getId();
+	}
+
+	@Transactional
+	public void delete(Long commentId, String loginUserId) {
+		Member loginUser = customMemberRepository.findByUserId(loginUserId);
+		Comment comment = customCommentRepository.findById(commentId);
+		validateAuthority(loginUser, comment);
+		customCommentRepository.delete(comment);
+	}
+
+	private static void validateAuthority(Member loginUser, Comment comment) {
+		if (!loginUser.equals(comment.getMember())) {
+			throw new NotAuthorizedException();
+		}
 	}
 }

@@ -2,12 +2,14 @@ package com.fakebook.dongheon.comment.service;
 
 import com.fakebook.dongheon.comment.domain.Comment;
 import com.fakebook.dongheon.comment.domain.CustomCommentRepository;
+import com.fakebook.dongheon.comment.exception.CommentNotFoundException;
 import com.fakebook.dongheon.comment.web.dto.CommentRegisterDto;
 import com.fakebook.dongheon.member.domain.CustomMemberRepository;
 import com.fakebook.dongheon.member.domain.Member;
 import com.fakebook.dongheon.member.web.dto.MemberRegisterDto;
 import com.fakebook.dongheon.post.domain.CustomPostRepository;
 import com.fakebook.dongheon.post.domain.Post;
+import com.fakebook.dongheon.security.exception.NotAuthorizedException;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,6 +19,7 @@ import static com.fakebook.dongheon.member.service.MemberServiceTest.getTestMemb
 import static com.fakebook.dongheon.post.service.PostServiceTest.getLoginUserId;
 import static com.fakebook.dongheon.post.service.PostServiceTest.getTestPostRegisterDto;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest
@@ -79,6 +82,35 @@ public class CommentServiceTest {
 
 		//then
 		assertThat(comment.getContent()).isEqualTo(commentDto.getContent());
+	}
+
+	@WithMockUser(MY_ACCOUNT_ID)
+	@Test
+	void 댓글_삭제_기능_동작_확인() {
+		//given
+		CommentRegisterDto commentDto = getCommentRegisterDto();
+		String loginUserId = getLoginUserId();
+		Long commentId = commentService.register(commentDto, testPostId, loginUserId);
+
+		//when
+		commentService.delete(commentId, loginUserId);
+
+		assertThatExceptionOfType(CommentNotFoundException.class)
+				.isThrownBy(() -> customCommentRepository.findById(commentId));
+	}
+
+	@WithMockUser(ANOTHER_PERSON_ACCOUNT_ID)
+	@Test
+	void 자신이_작성한_댓글이아니면_삭제할_수_없다() {
+		//given
+		CommentRegisterDto commentDto = getCommentRegisterDto();
+		Long commentId = commentService.register(commentDto, testPostId, MY_ACCOUNT_ID);
+		String anotherPersonId = getLoginUserId();
+
+
+		//when
+		assertThatExceptionOfType(NotAuthorizedException.class)
+				.isThrownBy(() -> commentService.delete(commentId, anotherPersonId));
 	}
 
 	public static CommentRegisterDto getCommentRegisterDto() {

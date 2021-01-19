@@ -18,4 +18,10 @@ public class CommentApiController {
 		String loginUserId = principal.getName();
 		return commentService.register(dto, postId, loginUserId);
 	}
+
+	@DeleteMapping("/delete/{commentId}")
+	public void delete(@PathVariable Long commentId, Principal principal) {
+		String loginUserId = principal.getName();
+		commentService.delete(commentId, loginUserId);
+	}
 }

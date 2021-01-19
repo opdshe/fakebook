@@ -18,6 +18,10 @@ public class CustomCommentRepository {
 		return commentRepository.save(comment);
 	}
 
+	public void delete(Comment comment) {
+		commentRepository.delete(comment);
+	}
+
 	public void deleteAll() {
 		commentRepository.deleteAll();
 	}

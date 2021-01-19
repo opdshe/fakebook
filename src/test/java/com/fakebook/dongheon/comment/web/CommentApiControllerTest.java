@@ -2,6 +2,7 @@ package com.fakebook.dongheon.comment.web;
 
 import com.fakebook.dongheon.comment.domain.Comment;
 import com.fakebook.dongheon.comment.domain.CustomCommentRepository;
+import com.fakebook.dongheon.comment.exception.CommentNotFoundException;
 import com.fakebook.dongheon.comment.service.CommentService;
 import com.fakebook.dongheon.comment.web.dto.CommentRegisterDto;
 import com.fakebook.dongheon.member.domain.CustomMemberRepository;
@@ -22,9 +23,12 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static com.fakebook.dongheon.comment.service.CommentServiceTest.getCommentRegisterDto;
 import static com.fakebook.dongheon.member.service.MemberServiceTest.getTestMemberDto;
+import static com.fakebook.dongheon.post.service.PostServiceTest.getLoginUserId;
 import static com.fakebook.dongheon.post.service.PostServiceTest.getTestPostRegisterDto;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -99,5 +103,21 @@ class CommentApiControllerTest {
 
 		//then
 		assertThat(dto.getContent()).isEqualTo(comment.getContent());
+	}
+
+	@WithMockUser(username = MY_ACCOUNT_ID)
+	@Test
+	void 댓글_삭제_컨트롤러_테스트() throws Exception {
+		//given
+		CommentRegisterDto dto = getCommentRegisterDto();
+		String loginUserId = getLoginUserId();
+		Long commentId = commentService.register(dto, testPostId, loginUserId);
+
+		//when
+		mvc.perform(delete("/comment/delete/{commentId}", commentId));
+
+		//then
+		assertThatExceptionOfType(CommentNotFoundException.class)
+				.isThrownBy(() -> customCommentRepository.findById(commentId));
 	}
 }
