@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 	@Override
-	@EntityGraph(attributePaths = {"member"})
+	@EntityGraph(attributePaths = {"member", "comments"})
 	List<Post> findAll();
 
 	@Override

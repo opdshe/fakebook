@@ -33,7 +33,7 @@ public class PostApiController {
 	}
 
 	@GetMapping("/posts")
-	public List<PostResponseDto> findAllSortByPostDate() {
-		return postService.findAllSortByPostDate();
+	public List<PostResponseDto> findAllOrderByPostDate() {
+		return postService.findAllOrderByPostDate();
 	}
 }

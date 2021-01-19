@@ -33,7 +33,7 @@ public class Post extends JpaBaseEntity {
 	@Column(name = "post_date")
 	private LocalDateTime postDate;
 
-	@OneToMany(mappedBy = "post", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "post")
 	private List<Comment> comments = new ArrayList<>();
 
 	public Post(String content, Member member) {
