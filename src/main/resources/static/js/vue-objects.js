@@ -71,16 +71,28 @@ Vue.component('comment', {
                 console.log(response);
                 alert("댓글을 작성했습니다. ");
                 window.location.reload();
-            }).catch(function (error) {
-                console.log(error);
+            }).catch(error => {
+                console.log(error.response.data.message)
+                alert(error.response.data.message)
+            });
+        },
+        deleteComment: function (commentId) {
+            axios.delete("/comment/delete/" + commentId)
+                .then(function (response) {
+                    console.log(response);
+                    alert("댓글을 삭제했습니다. ");
+                    window.location.reload();
+                }).catch(error => {
+                console.log(error.response.data.message)
+                alert(error.response.data.message)
             });
         }
     },
     template:
         '<div class="feed-footer">\n' +
         '   <div class="comment">\n' +
-        '       <ul class="list-unstyled list-info" v-for="comment in comments">\n' +
-        '           <li class="comment-item">\n' +
+        '       <ul class="list-unstyled list-info" v-for="comment in comments" v-bind:comment ="comment">\n' +
+        '           <li class="comment-item" >\n' +
         '               <img class="thumb-img img-circle" src="/images/default/profile-default.png" alt="">\n' +
         '               <div class="info">\n' +
         '                   <div class="bg-lightgray border-radius-18 padding-10 max-width-100">\n' +
@@ -90,7 +102,7 @@ Vue.component('comment', {
         '               <div class="font-size-12 pdd-left-10 pdd-top-5">\n' +
         '                   <span class="pointer text-link-color">좋아요</span>\n' +
         '                   <span>·</span>\n' +
-        '                   <span class="pointer text-link-color">답글 달기</span>\n' +
+        '                   <a v-on:click="deleteComment(comment.id)"><span class="pointer text-link-color">삭제하기</span></a>\n' +
         '                   <span>·</span>\n' +
         '                   <span class="pointer">2시간</span>\n' +
         '               </div>\n' +
@@ -115,8 +127,9 @@ Vue.component('post', {
                     console.log("delete post . id= " + response);
                     alert("게시물을 삭제했습니다. ");
                     window.location.reload();
-                }).catch(function (error) {
-                console.log(error);
+                }).catch(error => {
+                console.log(error.response.data.message)
+                alert(error.response.data.message)
             })
         }
     },
@@ -150,7 +163,7 @@ Vue.component('post', {
         '        </ul>\n' +
         '   </div>\n' +
         '   <div class="feed-body no-pdd">\n' +
-        '       <div dir="auto" style="text-align:start">{{post.content}}</div>\n' +
+        '       <div dir="auto" style="text-align:start">{{post.content}}</div><br>\n' +
         '   </div>\n' +
         '   <ul class="feed-action pdd-btm-5 border bottom">\n' +
         '       <li>\n' +
@@ -232,8 +245,9 @@ Vue.component('post-register-card', {
                 console.log(response);
                 alert("게시물을 작성했습니다. ");
                 window.location.reload();
-            }).catch(function (error) {
-                console.log(error);
+            }).catch(error => {
+                console.log(error.response.data.message)
+                alert(error.response.data.message)
             });
         }
     }
