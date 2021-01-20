@@ -29,25 +29,26 @@ public class PostService {
 
 	@Transactional
 	public void delete(Long id, String loginUserId) {
-		Post post = customPostRepository.findById(id);
 		Member loginUser = customMemberRepository.findByUserId(loginUserId);
+		Post post = customPostRepository.findById(id);
 		validateAuthority(post, loginUser);
 		customPostRepository.delete(post);
 	}
 
 	@Transactional
 	public void update(Long id, PostRegisterDto dto, String loginUserId) {
-		Post post = customPostRepository.findById(id);
 		Member loginUser = customMemberRepository.findByUserId(loginUserId);
+		Post post = customPostRepository.findById(id);
 		validateAuthority(post, loginUser);
 		post.update(dto);
 	}
 
 	@Transactional
-	public List<PostResponseDto> findAllOrderByPostDate() {
+	public List<PostResponseDto> findAllOrderByPostDate(String loginUserId) {
+		Member loginUser = customMemberRepository.findByUserId(loginUserId);
 		return customPostRepository.findAll().stream()
 				.sorted(Comparator.comparing(Post::getPostDate).reversed())
-				.map(PostResponseDto::of)
+				.map(post -> PostResponseDto.of(post, loginUser))
 				.collect(Collectors.toList());
 	}
 

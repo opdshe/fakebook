@@ -33,7 +33,8 @@ public class PostApiController {
 	}
 
 	@GetMapping("/posts")
-	public List<PostResponseDto> findAllOrderByPostDate() {
-		return postService.findAllOrderByPostDate();
+	public List<PostResponseDto> findAllOrderByPostDate(Principal principal) {
+		String loginUserId = principal.getName();
+		return postService.findAllOrderByPostDate(loginUserId);
 	}
 }

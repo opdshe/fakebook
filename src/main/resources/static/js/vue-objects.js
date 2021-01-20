@@ -86,6 +86,15 @@ Vue.component('comment', {
                 console.log(error.response.data.message)
                 alert(error.response.data.message)
             });
+        }, likeComment: function (commentId) {
+            axios.post("/comment/like/" + commentId)
+                .then(function (response) {
+                    console.log(response);
+                    window.location.reload();
+                }).catch(error => {
+                console.log(error.response.data.message)
+                alert(error.response.data.message)
+            });
         }
     },
     template:
@@ -100,11 +109,17 @@ Vue.component('comment', {
         '                       <span>{{comment.content}}</span>\n' +
         '                   </div>\n' +
         '               <div class="font-size-12 pdd-left-10 pdd-top-5">\n' +
-        '                   <span class="pointer text-link-color">좋아요</span>\n' +
-        '                   <span>·</span>\n' +
+        '                   <a v-on:click="likeComment(comment.id)">' +
+        '                       <span class="pointer text-link-color" v-if="comment.hasLiked" style="font-weight: bold">좋아요</span>\n' +
+        '                       <span class="pointer text-link-color" v-else>좋아요</span>\n' +
+        '                   </a>' +
         '                   <a v-on:click="deleteComment(comment.id)"><span class="pointer text-link-color">삭제하기</span></a>\n' +
         '                   <span>·</span>\n' +
         '                   <span class="pointer">2시간</span>\n' +
+        '                   <div v-if ="comment.like" style="display: inline">' +
+        '                       <i class="fa fa-thumbs-o-up text-info font-size-16 mrg-left-5" style="float:right;"></i>\n' +
+        '                       <span style="float:right;">{{comment.like}}</span>\n' +
+        '                   </div>' +
         '               </div>\n' +
         '           </div>\n' +
         '       </li>\n' +
@@ -174,7 +189,7 @@ Vue.component('post', {
         '           <span class="font-size-13">공유 78회</span>\n' +
         '       </li>\n' +
         '       <li class="float-right mrg-right-15">\n' +
-        '           <span class="font-size-13">댓글 2개</span>\n' +
+        '           <span class="font-size-13">댓글{{post.comments.length}}개</span>\n' +
         '       </li>\n' +
         '   </ul>\n' +
         '   <ul class="feed-action border bottom d-flex">\n' +

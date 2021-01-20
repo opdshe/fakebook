@@ -120,4 +120,20 @@ class CommentApiControllerTest {
 		assertThatExceptionOfType(CommentNotFoundException.class)
 				.isThrownBy(() -> customCommentRepository.findById(commentId));
 	}
+
+	@WithMockUser(username = MY_ACCOUNT_ID)
+	@Test
+	void 좋아요_기능_컨트롤러_테스트() throws Exception {
+		//given
+		CommentRegisterDto dto = getCommentRegisterDto();
+		String loginUserId = getLoginUserId();
+		Long commentId = commentService.register(dto, testPostId, loginUserId);
+
+		//when
+		mvc.perform(post("/comment/like/{commentId}", commentId));
+		Comment comment = customCommentRepository.findById(commentId);
+
+		//then
+		assertThat(comment.getLike()).isEqualTo(1);
+	}
 }

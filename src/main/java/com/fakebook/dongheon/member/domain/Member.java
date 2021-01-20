@@ -1,6 +1,7 @@
 package com.fakebook.dongheon.member.domain;
 
 import com.fakebook.dongheon.JpaBaseEntity;
+import com.fakebook.dongheon.comment.domain.Comment;
 import com.fakebook.dongheon.member.web.dto.MemberRegisterDto;
 import lombok.*;
 
@@ -39,6 +40,19 @@ public class Member extends JpaBaseEntity {
 		this.name = dto.getName();
 		this.birthday = LocalDate.of(dto.getBirthdayYear(), dto.getBirthdayMonth(), dto.getBirthdayDay());
 		this.gender = dto.getGender();
+	}
+
+	public int likeComment(Comment comment) {
+		if (hasAlreadyLiked(comment)) {
+			comment.getFans().remove(this);
+			return comment.cancelLike();
+		}
+		comment.getFans().add(this);
+		return comment.like();
+	}
+
+	private boolean hasAlreadyLiked(Comment comment) {
+		return comment.getFans().contains(this);
 	}
 
 	@Builder

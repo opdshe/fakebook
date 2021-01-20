@@ -113,6 +113,21 @@ public class CommentServiceTest {
 				.isThrownBy(() -> commentService.delete(commentId, anotherPersonId));
 	}
 
+	@WithMockUser(MY_ACCOUNT_ID)
+	@Test
+	void 좋아요_기능_동작_확인() {
+		//given
+		String loginUserId = getLoginUserId();
+		CommentRegisterDto commentDto = getCommentRegisterDto();
+		Long commentId = commentService.register(commentDto, testPostId, MY_ACCOUNT_ID);
+
+		//when
+		int like = commentService.like(commentId, loginUserId);
+
+		//then
+		assertThat(like).isEqualTo(1);
+	}
+
 	public static CommentRegisterDto getCommentRegisterDto() {
 		CommentRegisterDto dto = new CommentRegisterDto();
 		dto.setContent(COMMENT_DTO_CONTENT);
