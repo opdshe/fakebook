@@ -190,13 +190,14 @@ Vue.component('post', {
         '   </div>\n' +
         '   <div class="feed-body no-pdd">\n' +
         '       <div dir="auto" style="text-align:start">{{post.content}}</div><br>\n' +
+        '       <iframe v-if="post.youtubeUrl" v-bind:src="post.youtubeUrl" height="380" allowfullscreen></iframe>\n' +
         '   </div>\n' +
         '   <ul class="feed-action pdd-btm-5 border bottom">\n' +
         '       <li v-if="post.like">\n' +
         '           <i class="fa fa-thumbs-o-up text-info font-size-16 mrg-left-5"></i>\n' +
         '           <span class="font-size-14 lh-2-1">{{post.like}}</span>\n' +
         '       </li>\n' +
-        '       <li class="float-right">\n' +
+        '       <li class="float-right" style="display:none;">\n' +
         '           <span class="font-size-13">공유 78회</span>\n' +
         '       </li>\n' +
         '       <li class="float-right mrg-right-15">\n' +

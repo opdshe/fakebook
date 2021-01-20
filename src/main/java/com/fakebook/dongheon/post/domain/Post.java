@@ -38,6 +38,9 @@ public class Post extends JpaBaseEntity {
 	@Column(name = "post_like")
 	private Integer like = 0;
 
+	@Column(name = "youtube_url")
+	private String youtubeUrl;
+
 	@JoinTable(name = "post_likes")
 	@ManyToMany
 	private Set<Member> peopleWhoLikeThis = new HashSet<>();
@@ -48,6 +51,13 @@ public class Post extends JpaBaseEntity {
 	public Post(String content, Member member) {
 		this.content = content;
 		this.member = member;
+		this.postDate = LocalDateTime.now();
+	}
+
+	public Post(String content, Member member, String youtubeUrl) {
+		this.content = content;
+		this.member = member;
+		this.youtubeUrl = youtubeUrl;
 		this.postDate = LocalDateTime.now();
 	}
 

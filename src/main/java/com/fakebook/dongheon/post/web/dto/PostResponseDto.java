@@ -13,6 +13,7 @@ public class PostResponseDto {
 	private Long id;
 	private String content;
 	private String poster;
+	private String youtubeUrl;
 	private List<CommentResponseDto> comments;
 	private boolean hasLiked;
 	private int like;
@@ -27,6 +28,7 @@ public class PostResponseDto {
 				.collect(Collectors.toList());
 		dto.hasLiked = post.getPeopleWhoLikeThis().contains(loginUser);
 		dto.like = post.getLike();
+		dto.youtubeUrl = post.getYoutubeUrl();
 		return dto;
 	}
 }
