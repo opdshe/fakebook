@@ -74,15 +74,21 @@
                     <post-register-card v-bind:username="username"
                                         v-bind:placeholder="placeholder"></post-register-card>
                 </div>
-                <!-------------유툽 게시글 ------------>
+                <!----------------------게시글 ------------------------->
+                <post v-for="post in posts"
+                      v-bind:key="post.id"
+                      v-bind:post="post"
+                      v-bind:username="username">
+                </post>
+                <!------------------------------샘플 게시글 ------------------------------->
                 <div class="card widget-feed padding-15">
                     <div class="feed-header">
                         <ul class="list-unstyled list-info">
                             <li>
-                                <img class="thumb-img img-circle" src="/images/default/eastjun_profile.jpg" alt="">
+                                <img class="thumb-img img-circle" src="/images/default/profile-default.png" alt="">
                                 <div class="info">
-                                    <a href="" class="title no-pdd-vertical text-semibold inline-block">eastjun</a>
-                                    <span>님이 그룹에 링크를 공유했습니다.</span>
+                                    <a href="" class="title no-pdd-vertical text-semibold inline-block">이동헌</a>
+                                    <span>님이 그룹에 링크를 공유했습니다. </span>
                                     <span class="sub-title">15시간</span>
                                     <a class="pointer absolute top-0 right-0" data-toggle="dropdown"
                                        aria-expanded="false">
@@ -104,8 +110,8 @@
                     </div>
                     <div class="feed-body no-pdd">
                         <p>
-                            <span> 해리와 션의 MVC 패턴 </span> <br>
-                            <iframe src="https://www.youtube.com/embed/uoVNJkyXX0I" height="380"
+                            <span> 요즘 공부할 때 즐겨 듣는 노래 </span> <br><br>
+                            <iframe src="https://www.youtube.com/embed/1yXZIFYv4SE" height="380"
                                     allowfullscreen></iframe>
                         </p>
                     </div>
@@ -160,6 +166,22 @@
                                         </div>
                                     </div>
                                 </li>
+                                <li class="comment-item">
+                                    <img class="thumb-img img-circle" src="/images/default/profile-default.png" alt="">
+                                    <div class="info">
+                                        <div class="bg-lightgray border-radius-18 padding-10 max-width-100">
+                                            <a href="" class="title text-bold inline-block text-link-color">이동헌</a>
+                                            <span>아유 그럼요~ MVC패턴 최고입니다 👍🏻</span>
+                                        </div>
+                                        <div class="font-size-12 pdd-left-10 pdd-top-5">
+                                            <span class="pointer text-link-color">좋아요</span>
+                                            <span>·</span>
+                                            <span class="pointer text-link-color">답글 달기</span>
+                                            <span>·</span>
+                                            <span class="pointer">2시간</span>
+                                        </div>
+                                    </div>
+                                </li>
                             </ul>
                             <div class="add-comment">
                                 <textarea rows="1" class="form-control" placeholder="댓글을 입력하세요.."></textarea>
@@ -167,12 +189,6 @@
                         </div>
                     </div>
                 </div>
-                <!----------------------게시글 ------------------------->
-                <post v-for="post in posts"
-                      v-bind:key="post.id"
-                      v-bind:post="post"
-                      v-bind:username="username">
-                </post>
             </div>
             <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 pdd-right-0">
                 <div class="card">

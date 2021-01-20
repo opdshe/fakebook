@@ -44,7 +44,7 @@ public class PostService {
 	}
 
 	@Transactional
-	public List<PostResponseDto> findAllSortByPostDate() {
+	public List<PostResponseDto> findAllOrderByPostDate() {
 		return customPostRepository.findAll().stream()
 				.sorted(Comparator.comparing(Post::getPostDate).reversed())
 				.map(PostResponseDto::of)

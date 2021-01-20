@@ -1,5 +1,6 @@
 package com.fakebook.dongheon.feed.web;
 
+import com.fakebook.dongheon.member.domain.CustomMemberRepository;
 import com.fakebook.dongheon.security.SecurityConfig;
 import com.fakebook.dongheon.security.service.CustomUserDetailsService;
 import org.junit.jupiter.api.Test;
@@ -20,10 +21,13 @@ class FeedControllerTest {
 	private MockMvc mockMvc;
 
 	@MockBean
+	private CustomMemberRepository customMemberRepository;
+
+	@MockBean
 	private CustomUserDetailsService userDetailsService;
 
 	@Test
-	void Peed_페이지_호출_동작_확인() throws Exception {
+	void Feed_페이지_호출_동작_확인() throws Exception {
 		mockMvc.perform(get("/feed"))
 				.andExpect(status().isOk())
 				.andDo(print());

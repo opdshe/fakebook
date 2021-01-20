@@ -1,6 +1,7 @@
 package com.fakebook.dongheon.post.domain;
 
 import com.fakebook.dongheon.JpaBaseEntity;
+import com.fakebook.dongheon.comment.domain.Comment;
 import com.fakebook.dongheon.member.domain.Member;
 import com.fakebook.dongheon.post.web.dto.PostRegisterDto;
 import lombok.EqualsAndHashCode;
@@ -9,6 +10,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @EqualsAndHashCode(exclude = "id", callSuper = false)
 @Getter
@@ -29,6 +32,9 @@ public class Post extends JpaBaseEntity {
 
 	@Column(name = "post_date")
 	private LocalDateTime postDate;
+
+	@OneToMany(mappedBy = "post")
+	private List<Comment> comments = new ArrayList<>();
 
 	public Post(String content, Member member) {
 		this.content = content;

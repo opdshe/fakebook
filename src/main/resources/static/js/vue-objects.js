@@ -55,6 +55,68 @@ Vue.component('upper-nav-bar', {
         '</header>',
 })
 
+//게시글 댓글
+Vue.component('comment', {
+    props: ['comments', 'postId'],
+    data: function () {
+        return {
+            commentContent: ''
+        }
+    },
+    methods: {
+        register: function (postId) {
+            axios.post("/comment/register/" + postId, {
+                content: this.commentContent
+            }).then(function (response) {
+                console.log(response);
+                alert("댓글을 작성했습니다. ");
+                window.location.reload();
+            }).catch(error => {
+                console.log(error.response.data.message)
+                alert(error.response.data.message)
+            });
+        },
+        deleteComment: function (commentId) {
+            axios.delete("/comment/delete/" + commentId)
+                .then(function (response) {
+                    console.log(response);
+                    alert("댓글을 삭제했습니다. ");
+                    window.location.reload();
+                }).catch(error => {
+                console.log(error.response.data.message)
+                alert(error.response.data.message)
+            });
+        }
+    },
+    template:
+        '<div class="feed-footer">\n' +
+        '   <div class="comment">\n' +
+        '       <ul class="list-unstyled list-info" v-for="comment in comments" v-bind:comment ="comment">\n' +
+        '           <li class="comment-item" >\n' +
+        '               <img class="thumb-img img-circle" src="/images/default/profile-default.png" alt="">\n' +
+        '               <div class="info">\n' +
+        '                   <div class="bg-lightgray border-radius-18 padding-10 max-width-100">\n' +
+        '                       <a href="" class="title text-bold inline-block text-link-color">{{comment.commenter}}</a>\n' +
+        '                       <span>{{comment.content}}</span>\n' +
+        '                   </div>\n' +
+        '               <div class="font-size-12 pdd-left-10 pdd-top-5">\n' +
+        '                   <span class="pointer text-link-color">좋아요</span>\n' +
+        '                   <span>·</span>\n' +
+        '                   <a v-on:click="deleteComment(comment.id)"><span class="pointer text-link-color">삭제하기</span></a>\n' +
+        '                   <span>·</span>\n' +
+        '                   <span class="pointer">2시간</span>\n' +
+        '               </div>\n' +
+        '           </div>\n' +
+        '       </li>\n' +
+        '   </ul>\n' +
+        '   <div class="add-comment" style="height: 30px; position: relative">\n' +
+        '       <textarea rows="1"  class="form-control" placeholder="댓글을 입력하세요.."  v-model="commentContent" style="width: 90%; float: left"></textarea>\n' +
+        '       <input type="submit" value="작성" style="width: 10%; float:left; position: absolute; margin-top: 15px; margin-bottom: 15px' +
+        '" v-on:click="register(postId)">\n' +
+        '   </div>\n' +
+        '   </div>\n' +
+        '</div>'
+})
 
 //게시글 객체
 Vue.component('post', {
@@ -65,8 +127,9 @@ Vue.component('post', {
                     console.log("delete post . id= " + response);
                     alert("게시물을 삭제했습니다. ");
                     window.location.reload();
-                }).catch(function (error) {
-                console.log(error);
+                }).catch(error => {
+                console.log(error.response.data.message)
+                alert(error.response.data.message)
             })
         }
     },
@@ -100,7 +163,7 @@ Vue.component('post', {
         '        </ul>\n' +
         '   </div>\n' +
         '   <div class="feed-body no-pdd">\n' +
-        '       <div dir="auto" style="text-align:start">{{post.content}}</div>\n' +
+        '       <div dir="auto" style="text-align:start">{{post.content}}</div><br>\n' +
         '   </div>\n' +
         '   <ul class="feed-action pdd-btm-5 border bottom">\n' +
         '       <li>\n' +
@@ -134,31 +197,8 @@ Vue.component('post', {
         '           </button>\n' +
         '       </li>\n' +
         '   </ul>\n' +
-        '   <div class="feed-footer">\n' +
-        '       <div class="comment">\n' +
-        '           <ul class="list-unstyled list-info">\n' +
-        '               <li class="comment-item">\n' +
-        '                   <img class="thumb-img img-circle" src="/images/default/eastjun_profile.jpg" alt="">\n' +
-        '                   <div class="info">\n' +
-        '                       <div class="bg-lightgray border-radius-18 padding-10 max-width-100">\n' +
-        '                           <a href="" class="title text-bold inline-block text-link-color">eastjun</a>\n' +
-        '                           <span>크 멋져요. MVC패턴을 직접 프로젝트에 적용해봤나요?</span>\n' +
-        '                   </div>\n' +
-        '                   <div class="font-size-12 pdd-left-10 pdd-top-5">\n' +
-        '                       <span class="pointer text-link-color">좋아요</span>\n' +
-        '                       <span>·</span>\n' +
-        '                       <span class="pointer text-link-color">답글 달기</span>\n' +
-        '                       <span>·</span>\n' +
-        '                       <span class="pointer">2시간</span>\n' +
-        '                   </div>\n' +
-        '               </div>\n' +
-        '           </li>\n' +
-        '       </ul>\n' +
-        '       <div class="add-comment">\n' +
-        '                <textarea rows="1" class="form-control" placeholder="댓글을 입력하세요.."></textarea>\n' +
-        '            </div>\n' +
-        '        </div>\n' +
-        '    </div>\n' +
+        '   <comment v-bind:comments = "post.comments"' +
+        '            v-bind:postId = "post.id"></comment> \n' +
         '</div>'
 })
 
@@ -205,8 +245,9 @@ Vue.component('post-register-card', {
                 console.log(response);
                 alert("게시물을 작성했습니다. ");
                 window.location.reload();
-            }).catch(function (error) {
-                console.log(error);
+            }).catch(error => {
+                console.log(error.response.data.message)
+                alert(error.response.data.message)
             });
         }
     }

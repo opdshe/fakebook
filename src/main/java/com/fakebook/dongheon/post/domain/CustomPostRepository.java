@@ -20,6 +20,11 @@ public class CustomPostRepository {
 				.orElseThrow(PostNotFoundException::new);
 	}
 
+	public Post findWithCommentsById(Long id) {
+		return postRepository.findWithCommentsById(id)
+				.orElseThrow(PostNotFoundException::new);
+	}
+
 	public Post save(Post post) {
 		return postRepository.save(post);
 	}

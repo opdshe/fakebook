@@ -1,21 +1,27 @@
 package com.fakebook.dongheon.post.web.dto;
 
+import com.fakebook.dongheon.comment.web.dto.CommentResponseDto;
 import com.fakebook.dongheon.post.domain.Post;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class PostResponseDto {
-	private final Long id;
-	private final String content;
-	private final String poster;
-
-	public PostResponseDto(Long id, String content, String poster) {
-		this.id = id;
-		this.content = content;
-		this.poster = poster;
-	}
+	private Long id;
+	private String content;
+	private String poster;
+	private List<CommentResponseDto> comments;
 
 	public static PostResponseDto of(Post post) {
-		return new PostResponseDto(post.getId(), post.getContent(), post.getMember().getName());
+		PostResponseDto dto = new PostResponseDto();
+		dto.id = post.getId();
+		dto.content = post.getContent();
+		dto.poster = post.getMember().getName();
+		dto.comments = post.getComments().stream()
+				.map(CommentResponseDto::of)
+				.collect(Collectors.toList());
+		return dto;
 	}
 }
