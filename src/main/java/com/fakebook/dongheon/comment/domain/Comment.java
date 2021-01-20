@@ -31,11 +31,11 @@ public class Comment {
 	private Member member;
 
 	@Column(name = "comment_like")
-	private Integer like;
+	private Integer like = 0;
 
 	@ManyToMany
-	@JoinTable(name = "comment_like")
-	private Set<Member> fans = new HashSet<>();
+	@JoinTable(name = "comment_likes")
+	private Set<Member> peopleWhoLikeThis = new HashSet<>();
 
 	public static Comment of(Post post, Member member, String content) {
 		return new Comment(post, member, content);

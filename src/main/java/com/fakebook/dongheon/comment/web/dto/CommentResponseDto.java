@@ -18,7 +18,7 @@ public class CommentResponseDto {
 		dto.content = comment.getContent();
 		dto.commenter = comment.getMember().getName();
 		dto.like = comment.getLike();
-		dto.hasLiked = comment.getFans().contains(loginUser);
+		dto.hasLiked = comment.getPeopleWhoLikeThis().contains(loginUser);
 		return dto;
 	}
 }

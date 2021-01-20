@@ -134,6 +134,21 @@ public class PostServiceTest {
 				.isThrownBy(() -> postService.update(id, updateDto, getLoginUserId()));
 	}
 
+	@WithMockUser(username = MY_ACCOUNT_ID)
+	@Test
+	void 좋아요_기능_동작_확인() {
+		//given
+		PostRegisterDto postDto = getTestPostRegisterDto();
+		String loginUserId = getLoginUserId();
+		Long postId = postService.register(postDto, loginUserId);
+
+		//when
+		System.out.println(postId);
+		Post post = customPostRepository.findById(postId);
+		Member member = customMemberRepository.findByUserId(loginUserId);
+		int like = postService.like(postId, loginUserId);
+	}
+
 	public static String getLoginUserId() {
 		UserDetails loginUser = (UserDetails) SecurityContextHolder.getContext()
 				.getAuthentication()

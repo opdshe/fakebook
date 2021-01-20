@@ -27,7 +27,7 @@ public class CommentApiController {
 
 	@PostMapping("/like/{commentId}")
 	public int like(@PathVariable Long commentId, Principal principal) {
-		String loginUserID = principal.getName();
-		return commentService.like(commentId, loginUserID);
+		String loginUserId = principal.getName();
+		return commentService.like(commentId, loginUserId);
 	}
 }

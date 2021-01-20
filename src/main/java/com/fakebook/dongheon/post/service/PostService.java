@@ -52,6 +52,13 @@ public class PostService {
 				.collect(Collectors.toList());
 	}
 
+	@Transactional
+	public Integer like(Long postId, String loginUserId) {
+		Member member = customMemberRepository.findByUserId(loginUserId);
+		Post post = customPostRepository.findById(postId);
+		return member.likePost(post);
+	}
+
 	private static void validateAuthority(Post post, Member loginUser) {
 		if (post.getMember() != loginUser) {
 			throw new NotAuthorizedException();

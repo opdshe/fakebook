@@ -3,6 +3,7 @@ package com.fakebook.dongheon.member.domain;
 import com.fakebook.dongheon.JpaBaseEntity;
 import com.fakebook.dongheon.comment.domain.Comment;
 import com.fakebook.dongheon.member.web.dto.MemberRegisterDto;
+import com.fakebook.dongheon.post.domain.Post;
 import lombok.*;
 
 import javax.persistence.*;
@@ -44,15 +45,28 @@ public class Member extends JpaBaseEntity {
 
 	public int likeComment(Comment comment) {
 		if (hasAlreadyLiked(comment)) {
-			comment.getFans().remove(this);
+			comment.getPeopleWhoLikeThis().remove(this);
 			return comment.cancelLike();
 		}
-		comment.getFans().add(this);
+		comment.getPeopleWhoLikeThis().add(this);
 		return comment.like();
 	}
 
+	public int likePost(Post post) {
+		if (hasAlreadyLiked(post)) {
+			post.getPeopleWhoLikeThis().remove(this);
+			return post.cancelLike();
+		}
+		post.getPeopleWhoLikeThis().add(this);
+		return post.like();
+	}
+
 	private boolean hasAlreadyLiked(Comment comment) {
-		return comment.getFans().contains(this);
+		return comment.getPeopleWhoLikeThis().contains(this);
+	}
+
+	private boolean hasAlreadyLiked(Post post) {
+		return post.getPeopleWhoLikeThis().contains(this);
 	}
 
 	@Builder

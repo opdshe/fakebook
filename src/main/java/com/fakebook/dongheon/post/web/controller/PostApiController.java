@@ -37,4 +37,10 @@ public class PostApiController {
 		String loginUserId = principal.getName();
 		return postService.findAllOrderByPostDate(loginUserId);
 	}
+
+	@PostMapping("/post/like/{postId}")
+	public int like(@PathVariable Long postId, Principal principal) {
+		String loginUserId = principal.getName();
+		return postService.like(postId, loginUserId);
+	}
 }

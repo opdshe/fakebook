@@ -86,7 +86,8 @@ Vue.component('comment', {
                 console.log(error.response.data.message)
                 alert(error.response.data.message)
             });
-        }, likeComment: function (commentId) {
+        },
+        likeComment: function (commentId) {
             axios.post("/comment/like/" + commentId)
                 .then(function (response) {
                     console.log(response);
@@ -146,6 +147,16 @@ Vue.component('post', {
                 console.log(error.response.data.message)
                 alert(error.response.data.message)
             })
+        },
+        likePost: function (postId) {
+            axios.post("/post/like/" + postId)
+                .then(function (response) {
+                    console.log(response);
+                    window.location.reload();
+                }).catch(error => {
+                console.log(error.response.data.message)
+                alert(error.response.data.message)
+            });
         }
     },
     props: ['post'],
@@ -181,9 +192,9 @@ Vue.component('post', {
         '       <div dir="auto" style="text-align:start">{{post.content}}</div><br>\n' +
         '   </div>\n' +
         '   <ul class="feed-action pdd-btm-5 border bottom">\n' +
-        '       <li>\n' +
+        '       <li v-if="post.like">\n' +
         '           <i class="fa fa-thumbs-o-up text-info font-size-16 mrg-left-5"></i>\n' +
-        '           <span class="font-size-14 lh-2-1">67</span>\n' +
+        '           <span class="font-size-14 lh-2-1">{{post.like}}</span>\n' +
         '       </li>\n' +
         '       <li class="float-right">\n' +
         '           <span class="font-size-13">공유 78회</span>\n' +
@@ -194,9 +205,15 @@ Vue.component('post', {
         '   </ul>\n' +
         '   <ul class="feed-action border bottom d-flex">\n' +
         '       <li class="text-center flex-grow-1">\n' +
-        '           <button class="btn btn-default no-border pdd-vertical-0 no-mrg width-100">\n' +
-        '               <i class="fa fa-thumbs-o-up font-size-16"></i>\n' +
-        '               <span class="font-size-13">좋아요</span>\n' +
+        '           <button v-on:click="likePost(post.id)" class="btn btn-default no-border pdd-vertical-0 no-mrg width-100">\n' +
+        '               <div v-if="post.hasLiked">' +
+        '                   <i class="fa fa-thumbs-o-up text-info font-size-16 mrg-left-5"></i>\n' +
+        '                   <span class="font-size-13" style= "color: #0c7bbe;font-weight: bold">좋아요</span>\n' +
+        '               </div>\n' +
+        '               <div v-else>' +
+        '                   <i class="fa fa-thumbs-o-up font-size-16"></i>\n' +
+        '                   <span class="font-size-13"">좋아요</span>\n' +
+        '              </div>\n' +
         '           </button>\n' +
         '       </li>\n' +
         '       <li class="text-center flex-grow-1">\n' +

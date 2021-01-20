@@ -14,6 +14,8 @@ public class PostResponseDto {
 	private String content;
 	private String poster;
 	private List<CommentResponseDto> comments;
+	private boolean hasLiked;
+	private int like;
 
 	public static PostResponseDto of(Post post, Member loginUser) {
 		PostResponseDto dto = new PostResponseDto();
@@ -23,6 +25,8 @@ public class PostResponseDto {
 		dto.comments = post.getComments().stream()
 				.map(comment -> CommentResponseDto.of(comment, loginUser))
 				.collect(Collectors.toList());
+		dto.hasLiked = post.getPeopleWhoLikeThis().contains(loginUser);
+		dto.like = post.getLike();
 		return dto;
 	}
 }
