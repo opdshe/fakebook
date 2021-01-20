@@ -42,7 +42,7 @@ public class Post extends JpaBaseEntity {
 	@ManyToMany
 	private Set<Member> peopleWhoLikeThis = new HashSet<>();
 
-	@OneToMany(mappedBy = "post")
+	@OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
 	private List<Comment> comments = new ArrayList<>();
 
 	public Post(String content, Member member) {
