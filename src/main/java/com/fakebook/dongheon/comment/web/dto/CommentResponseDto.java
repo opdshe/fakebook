@@ -9,6 +9,7 @@ public class CommentResponseDto {
 	private Long id;
 	private String content;
 	private String commenter;
+	private Long commenterId;
 	private Integer like;
 	private boolean hasLiked;
 
@@ -17,6 +18,7 @@ public class CommentResponseDto {
 		dto.id = comment.getId();
 		dto.content = comment.getContent();
 		dto.commenter = comment.getMember().getName();
+		dto.commenterId = comment.getMember().getId();
 		dto.like = comment.getLike();
 		dto.hasLiked = comment.getPeopleWhoLikeThis().contains(loginUser);
 		return dto;

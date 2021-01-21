@@ -85,7 +85,7 @@ Vue.component('comment', {
                     window.location.reload();
                 }).catch(error => {
                 console.log(error.response.data.message)
-                alert(error.response.data.message)
+                alert(error.response.data.message + "자신이 작성한 댓글만 삭제할 수 있습니다. ")
             });
         },
         likeComment: function (commentId) {
@@ -107,7 +107,8 @@ Vue.component('comment', {
         '               <img class="thumb-img img-circle" src="/images/default/profile-default.png" alt="">\n' +
         '               <div class="info">\n' +
         '                   <div class="bg-lightgray border-radius-18 padding-10 max-width-100">\n' +
-        '                       <a href="" class="title text-bold inline-block text-link-color">{{comment.commenter}}</a>\n' +
+        '                       <a v-bind:href="`/profile?memberId=${comment.commenterId}`" ' +
+        '                           class="title text-bold inline-block text-link-color">{{comment.commenter}}</a>\n' +
         '                       <span>{{comment.content}}</span>\n' +
         '                   </div>\n' +
         '               <div class="font-size-12 pdd-left-10 pdd-top-5">\n' +
@@ -146,7 +147,7 @@ Vue.component('post', {
                     window.location.reload();
                 }).catch(error => {
                 console.log(error.response.data.message)
-                alert(error.response.data.message)
+                alert(error.response.data.message + "자신이 작성한 게시글만 삭제할 수 있습니다. ")
             })
         },
         likePost: function (postId) {
@@ -168,8 +169,8 @@ Vue.component('post', {
         '            <li>\n' +
         '                <img class="thumb-img img-circle" src="/images/default/profile-default.png" alt="">\n' +
         '                <div class="info">\n' +
-        '                    <a href="" class="title no-pdd-vertical text-semibold inline-block">{{post.poster}}</a>\n' +
-        '                    <span></span>\n' +
+        '                    <a v-bind:href="`/profile?memberId=${post.posterId}`" class="title no-pdd-vertical ' +
+        '                       text-bold text-semibold inline-block" style="font-weight: bold">{{post.poster}}</a>\n' +
         '                    <span class="sub-title">15시간</span>\n' +
         '                    <a class="pointer absolute top-0 right-0" data-toggle="dropdown"\n' +
         '                       aria-expanded="false">\n' +
