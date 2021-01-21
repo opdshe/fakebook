@@ -24,4 +24,10 @@ public class CommentApiController {
 		String loginUserId = principal.getName();
 		commentService.delete(commentId, loginUserId);
 	}
+
+	@PostMapping("/like/{commentId}")
+	public int like(@PathVariable Long commentId, Principal principal) {
+		String loginUserId = principal.getName();
+		return commentService.like(commentId, loginUserId);
+	}
 }

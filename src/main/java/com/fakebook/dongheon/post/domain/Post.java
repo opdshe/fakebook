@@ -11,7 +11,9 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @EqualsAndHashCode(exclude = "id", callSuper = false)
 @Getter
@@ -33,7 +35,17 @@ public class Post extends JpaBaseEntity {
 	@Column(name = "post_date")
 	private LocalDateTime postDate;
 
-	@OneToMany(mappedBy = "post")
+	@Column(name = "post_like")
+	private Integer like = 0;
+
+	@Column(name = "youtube_url")
+	private String youtubeUrl;
+
+	@JoinTable(name = "post_likes")
+	@ManyToMany
+	private Set<Member> peopleWhoLikeThis = new HashSet<>();
+
+	@OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
 	private List<Comment> comments = new ArrayList<>();
 
 	public Post(String content, Member member) {
@@ -42,7 +54,24 @@ public class Post extends JpaBaseEntity {
 		this.postDate = LocalDateTime.now();
 	}
 
+	public Post(String content, Member member, String youtubeUrl) {
+		this.content = content;
+		this.member = member;
+		this.youtubeUrl = youtubeUrl;
+		this.postDate = LocalDateTime.now();
+	}
+
 	public void update(PostRegisterDto dto) {
 		this.content = dto.getContent();
+	}
+
+	public Integer like() {
+		like++;
+		return like;
+	}
+
+	public Integer cancelLike() {
+		like--;
+		return like;
 	}
 }

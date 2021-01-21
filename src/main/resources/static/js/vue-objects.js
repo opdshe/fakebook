@@ -86,6 +86,16 @@ Vue.component('comment', {
                 console.log(error.response.data.message)
                 alert(error.response.data.message)
             });
+        },
+        likeComment: function (commentId) {
+            axios.post("/comment/like/" + commentId)
+                .then(function (response) {
+                    console.log(response);
+                    window.location.reload();
+                }).catch(error => {
+                console.log(error.response.data.message)
+                alert(error.response.data.message)
+            });
         }
     },
     template:
@@ -100,11 +110,17 @@ Vue.component('comment', {
         '                       <span>{{comment.content}}</span>\n' +
         '                   </div>\n' +
         '               <div class="font-size-12 pdd-left-10 pdd-top-5">\n' +
-        '                   <span class="pointer text-link-color">좋아요</span>\n' +
-        '                   <span>·</span>\n' +
+        '                   <a v-on:click="likeComment(comment.id)">' +
+        '                       <span class="pointer text-link-color" v-if="comment.hasLiked" style="font-weight: bold">좋아요</span>\n' +
+        '                       <span class="pointer text-link-color" v-else>좋아요</span>\n' +
+        '                   </a>' +
         '                   <a v-on:click="deleteComment(comment.id)"><span class="pointer text-link-color">삭제하기</span></a>\n' +
         '                   <span>·</span>\n' +
         '                   <span class="pointer">2시간</span>\n' +
+        '                   <div v-if ="comment.like" style="display: inline">' +
+        '                       <i class="fa fa-thumbs-o-up text-info font-size-16 mrg-left-5" style="float:right;"></i>\n' +
+        '                       <span style="float:right;">{{comment.like}}</span>\n' +
+        '                   </div>' +
         '               </div>\n' +
         '           </div>\n' +
         '       </li>\n' +
@@ -131,6 +147,16 @@ Vue.component('post', {
                 console.log(error.response.data.message)
                 alert(error.response.data.message)
             })
+        },
+        likePost: function (postId) {
+            axios.post("/post/like/" + postId)
+                .then(function (response) {
+                    console.log(response);
+                    window.location.reload();
+                }).catch(error => {
+                console.log(error.response.data.message)
+                alert(error.response.data.message)
+            });
         }
     },
     props: ['post'],
@@ -164,24 +190,31 @@ Vue.component('post', {
         '   </div>\n' +
         '   <div class="feed-body no-pdd">\n' +
         '       <div dir="auto" style="text-align:start">{{post.content}}</div><br>\n' +
+        '       <iframe v-if="post.youtubeUrl" v-bind:src="post.youtubeUrl" height="380" allowfullscreen></iframe>\n' +
         '   </div>\n' +
         '   <ul class="feed-action pdd-btm-5 border bottom">\n' +
-        '       <li>\n' +
+        '       <li v-if="post.like">\n' +
         '           <i class="fa fa-thumbs-o-up text-info font-size-16 mrg-left-5"></i>\n' +
-        '           <span class="font-size-14 lh-2-1">67</span>\n' +
+        '           <span class="font-size-14 lh-2-1">{{post.like}}</span>\n' +
         '       </li>\n' +
-        '       <li class="float-right">\n' +
+        '       <li class="float-right" style="display:none;">\n' +
         '           <span class="font-size-13">공유 78회</span>\n' +
         '       </li>\n' +
         '       <li class="float-right mrg-right-15">\n' +
-        '           <span class="font-size-13">댓글 2개</span>\n' +
+        '           <span class="font-size-13">댓글{{post.comments.length}}개</span>\n' +
         '       </li>\n' +
         '   </ul>\n' +
         '   <ul class="feed-action border bottom d-flex">\n' +
         '       <li class="text-center flex-grow-1">\n' +
-        '           <button class="btn btn-default no-border pdd-vertical-0 no-mrg width-100">\n' +
-        '               <i class="fa fa-thumbs-o-up font-size-16"></i>\n' +
-        '               <span class="font-size-13">좋아요</span>\n' +
+        '           <button v-on:click="likePost(post.id)" class="btn btn-default no-border pdd-vertical-0 no-mrg width-100">\n' +
+        '               <div v-if="post.hasLiked">' +
+        '                   <i class="fa fa-thumbs-o-up text-info font-size-16 mrg-left-5"></i>\n' +
+        '                   <span class="font-size-13" style= "color: #0c7bbe;font-weight: bold">좋아요</span>\n' +
+        '               </div>\n' +
+        '               <div v-else>' +
+        '                   <i class="fa fa-thumbs-o-up font-size-16"></i>\n' +
+        '                   <span class="font-size-13"">좋아요</span>\n' +
+        '              </div>\n' +
         '           </button>\n' +
         '       </li>\n' +
         '       <li class="text-center flex-grow-1">\n' +

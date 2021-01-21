@@ -35,6 +35,13 @@ public class CommentService {
 		customCommentRepository.delete(comment);
 	}
 
+	@Transactional
+	public Integer like(Long commentId, String loginUserId) {
+		Member member = customMemberRepository.findByUserId(loginUserId);
+		Comment comment = customCommentRepository.findById(commentId);
+		return member.likeComment(comment);
+	}
+
 	private static void validateAuthority(Member loginUser, Comment comment) {
 		if (!loginUser.equals(comment.getMember())) {
 			throw new NotAuthorizedException();
