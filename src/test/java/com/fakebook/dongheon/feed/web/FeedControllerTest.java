@@ -1,6 +1,7 @@
 package com.fakebook.dongheon.feed.web;
 
 import com.fakebook.dongheon.member.domain.CustomMemberRepository;
+import com.fakebook.dongheon.post.domain.CustomPostRepository;
 import com.fakebook.dongheon.security.SecurityConfig;
 import com.fakebook.dongheon.security.service.CustomUserDetailsService;
 import org.junit.jupiter.api.Test;
@@ -22,6 +23,9 @@ class FeedControllerTest {
 
 	@MockBean
 	private CustomMemberRepository customMemberRepository;
+
+	@MockBean
+	private CustomPostRepository customPostRepository;
 
 	@MockBean
 	private CustomUserDetailsService userDetailsService;
