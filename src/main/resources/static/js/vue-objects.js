@@ -6,7 +6,7 @@ Vue.component('upper-nav-bar', {
         '    <div class="header-container max-width-lg mx-auto">\n' +
         '        <ul class="nav-left mrg-left-0">\n' +
         '            <li>\n' +
-        '                <a href="feed.html">\n' +
+        '                <a href="/feed">\n' +
         '                    <div class="logo" style="background-image: url(\'/images/default/icons.png\')"></div>\n' +
         '                </a>\n' +
         '            </li>\n' +
@@ -286,3 +286,15 @@ Vue.component('post-register-card', {
     }
 })
 
+
+Vue.component('profile', {
+    props: ['user'],
+    template:
+        '<div class="card widget-feed padding-15">\n' +
+        '    <div class="profile width-400px vertical-align" id="profile">\n' +
+        '        <img class="img-circle width-160px" src="/images/default/profile-default.png"\n' +
+        '             id="profile-img">\n' +
+        '        <span class="text-bold font-size-25 margin-20">{{user.name}}</span>\n' +
+        '    </div>\n' +
+        '</div>'
+})

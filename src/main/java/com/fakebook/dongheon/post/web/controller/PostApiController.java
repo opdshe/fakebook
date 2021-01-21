@@ -38,6 +38,11 @@ public class PostApiController {
 		return postService.findAllOrderByPostDate(loginUserId);
 	}
 
+	@GetMapping("/posts/{memberId}")
+	public List<PostResponseDto> getProfilePosts(@PathVariable Long memberId) {
+		return postService.getProfilePosts(memberId);
+	}
+
 	@PostMapping("/post/like/{postId}")
 	public int like(@PathVariable Long postId, Principal principal) {
 		String loginUserId = principal.getName();

@@ -1,7 +1,3 @@
-initFeedData()
-initPosts()
-
-
 var feed = new Vue({
     el: '#fakebook-app',
     data: {
@@ -11,15 +7,17 @@ var feed = new Vue({
     }
 })
 
+initFeedData()
+initPosts()
+
 function initFeedData() {
-    axios.get('/user-name')
+    getLoginUserName()
         .then(function (response) {
-            console.log(response.data)
             feed.username = response.data
             feed.placeholder = feed.username + "님은 무슨 생각을 하고 계신가요?"
         }).catch(function (error) {
-        alert(error.response.data.message);
-    });
+        alert(error.response.data.message)
+    })
 }
 
 function initPosts() {

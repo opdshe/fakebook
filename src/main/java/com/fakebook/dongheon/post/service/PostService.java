@@ -59,6 +59,12 @@ public class PostService {
 		return member.likePost(post);
 	}
 
+
+	public List<PostResponseDto> getProfilePosts(Long memberId) {
+		Member member = customMemberRepository.findById(memberId);
+		return customPostRepository.findAllByMember(member);
+	}
+
 	private static void validateAuthority(Post post, Member loginUser) {
 		if (post.getMember() != loginUser) {
 			throw new NotAuthorizedException();
