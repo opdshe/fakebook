@@ -26,6 +26,12 @@ public class CustomMemberRepository {
 				.orElseThrow(MemberNotFoundException::new);
 	}
 
+	public MemberResponseDto findMemberByUserId(String userId) {
+		return memberRepository.findByUserId(userId)
+				.map(MemberResponseDto::of)
+				.orElseThrow(MemberNotFoundException::new);
+	}
+
 	public void delete(Member member) {
 		memberRepository.delete(member);
 	}

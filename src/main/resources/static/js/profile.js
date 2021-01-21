@@ -3,9 +3,9 @@ let memberId = getUrlParameterByName('memberId')
 var profile = new Vue({
     el: '#fakebook-app',
     data: {
-        user: '',
+        target: '',
         posts: '',
-        username: ''
+        user: ''
     }
 })
 
@@ -15,13 +15,13 @@ initProfilePosts()
 function initProfile() {
     getLoginUserName()
         .then(function (response) {
-            profile.username = response.data
+            profile.user = response.data
         }).catch(function (error) {
         alert(error.response.data.message)
     })
     getMemberByMemberId(memberId)
         .then(function (response) {
-            profile.user = response.data
+            profile.target = response.data
         }).catch(function (error) {
         alert(error.response.data.message)
     })

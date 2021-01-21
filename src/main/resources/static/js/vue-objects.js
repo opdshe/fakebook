@@ -1,6 +1,6 @@
 //상단 네비바
 Vue.component('upper-nav-bar', {
-    props: ['username'],
+    props: ['user'],
     template:
         '<header id="header" class="header navbar">\n' +
         '    <div class="header-container max-width-lg mx-auto">\n' +
@@ -26,8 +26,9 @@ Vue.component('upper-nav-bar', {
         '                <a>\n' +
         '                    <img class="profile-img img-fluid" src="/images/default/profile-default.png" alt="">\n' +
         '                    <div class="user-info mrg-left-5">\n' +
-        '                        <span class="name pdd-right-5 text-white text-bold"' +
-        '                           onclick="location.href=\'/mypage\'" style=" cursor: pointer">{{username}}</span>\n' +
+        '                        <a v-bind:href="`/profile?memberId=${user.id}`">\n' +
+        '                           <span class="name pdd-right-5 text-white text-bold" style=" cursor: pointer">{{user.name}}</span>\n' +
+        '                        </a>' +
         '                    </div>\n' +
         '                </a>\n' +
         '            </li>\n' +
@@ -288,13 +289,13 @@ Vue.component('post-register-card', {
 
 
 Vue.component('profile', {
-    props: ['user'],
+    props: ['target'],
     template:
         '<div class="card widget-feed padding-15">\n' +
         '    <div class="profile width-400px vertical-align" id="profile">\n' +
         '        <img class="img-circle width-160px" src="/images/default/profile-default.png"\n' +
         '             id="profile-img">\n' +
-        '        <span class="text-bold font-size-25 margin-20">{{user.name}}</span>\n' +
+        '        <span class="text-bold font-size-25 margin-20">{{target.name}}</span>\n' +
         '    </div>\n' +
         '</div>'
 })
