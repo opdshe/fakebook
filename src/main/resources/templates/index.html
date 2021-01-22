@@ -24,7 +24,7 @@
                     <th>비밀번호</th>
                     <tr>
                         <td><input type="text" name="username" v-model="username"></td>
-                        <td><input type="text" name="password" v-model="password"></td>
+                            <td><input type="password" name="password" v-model="password"></td>
                         <td><input type="submit" value="로그인"></td>
                     </tr>
                 </table>
@@ -37,7 +37,8 @@
         <form class="join-form" id="join-form" @submit.prevent="validateInput" @submit="register" method="post">
             <input class="join-input" type="text" placeholder="이름" name="name" v-model="name">
             <input class="join-input" type="text" placeholder="휴대폰 번호 또는 이메일" name="userId" v-model="userId">
-            <input class="join-input" type="text" placeholder="비밀번호" name="password" v-model="password">
+            <input class="join-input" type="password" placeholder="비밀번호" name="password" v-model="password">
+            <br><span>너무 단순한 비밀번호는 로그인 시 경고 메세지가 출력될 수 있어요 ..🥲</span>
 
             <div class="div-birthday" id="div-birthday">
                 <span style="margin-top: 30px">생일</span>
@@ -73,7 +74,7 @@
                     </span>
                 </span>
             </div>
-            <p v-model="errors" v-if="errors.length">
+            <p v-if="errors.length">
             <ul>
                 <li v-for="error in errors">{{error}}</li>
             </ul>

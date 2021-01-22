@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>fakebook</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+    <link rel="shortcut icon" href="/images/logo/favicon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+          integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Amiri:400,400i|Source+Sans+Pro:400,400i,600,700'">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:100,200,300,400,500,600,700,800&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet" href="/css/app.css">
+    <link rel="stylesheet" href="/css/feed.css">
+    <link rel="stylesheet" href="/css/profile.css">
+</head>
+<body>
+<div id="fakebook-app">
+    <!---------------------------------상단 네비바------------------------------------->
+    <upper-nav-bar v-bind:user="user"></upper-nav-bar>
+    <div id="main-content" class="container-fluid max-width-lg mx-auto mrg-top-70">
+        <div class="row">
+            <!--------------------------------좌측 네비게이션 ---------------------------------->
+            <div id="left-profile-container" class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                <div class="left">
+                    <div class="left-profile">
+                        <a class="pointer">
+                            <img class="img-circle width-25px" src="/images/default/profile-default.png">
+                            <div class="left-name-edit pointer">
+                                <a class="left-name">{{user.name}}</a>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="left-menus">
+                        <ul class="left-sub-menus">
+                            <li class="left-sub-sub-menus mrg-btm-5 pointer">
+                                <div class="icons newspeed"></div>
+                                <span class="icon-name">  뉴스피드</span>
+                            </li>
+                            <li class="left-sub-sub-menus mrg-btm-5 pointer">
+                                <div class="icons message"></div>
+                                <span class="icon-name">  Messenger</span>
+                            </li>
+                            <li class="left-sub-sub-menus mrg-btm-5 pointer">
+                                <div class="icons watch"></div>
+                                <span class="icon-name">  Watch</span>
+                            </li>
+                        </ul>
+                        <ul class="left-sub-menus">
+                            <div class="left-group-title">바로가기</div>
+                            <li class="left-sub-sub-menus pointer">
+                                <div class="icons group"></div>
+                                <span class="icon-name">  알고리즘 스터디</span>
+                            </li>
+                            <li class="left-sub-sub-menus pointer">
+                                <div class="icons group"></div>
+                                <span class="icon-name">  이동헌과 친구들</span>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                <!----------------------프로필 ------------------------->
+                <profile v-bind:target="target"></profile>
+                <!----------------------게시글 ------------------------->
+                <post v-for="post in posts"
+                      v-bind:key="post.id"
+                      v-bind:post="post">
+                </post>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 pdd-right-0">
+                <div class="card">
+                    <h5 class="card-title mrg-top-15 mrg-btm-0 mrg-horizon-15">스토리</h5>
+                    <div class="card-body">
+                        <ul class="list-unstyled list-info">
+                            <li class="story-user-list mrg-btm-10">
+                                <img class="thumb-img img-circle img-circle-blue border"
+                                     src="/images/default/plus_btn.png" alt="">
+                                <div class="info mrg-left-5">
+                                    <a href=""
+                                       class="title no-pdd-vertical text-semibold inline-block text-bold text-link-color">스토리에
+                                        추가</a>
+                                    <span class="sub-title">사진, 동영상을 공유하거나 글을 남겨보세요</span>
+                                </div>
+                            </li>
+                            <li class="story-user-list mrg-btm-10">
+                                <img class="thumb-img img-circle img-circle-blue"
+                                     src="/images/default/dongheon.jpeg" alt="">
+                                <div class="info mrg-left-5 pdd-top-5">
+                                    <a href=""
+                                       class="title no-pdd-vertical text-semibold inline-block text-bold">이동헌</a>
+                                    <span class="sub-title">18시간전</span>
+                                </div>
+                            </li>
+                            <li class="story-user-list mrg-btm-10">
+                                <img class="thumb-img img-circle img-circle-blue"
+                                     src="https://avatars2.githubusercontent.com/u/46308585?s=460&v=4" alt="">
+                                <div class="info mrg-left-5 pdd-top-5">
+                                    <a href="" class="title no-pdd-vertical text-semibold inline-block text-bold">CU</a>
+                                    <span class="sub-title">18시간전</span>
+                                </div>
+                            </li>
+                            <li class="story-user-list mrg-btm-10">
+                                <img class="thumb-img img-circle img-circle-blue"
+                                     src="/images/default/eastjun_profile.jpg" alt="">
+                                <div class="info mrg-left-5 pdd-top-5">
+                                    <a href="" class="title no-pdd-vertical text-semibold inline-block text-bold">Eastjun</a>
+                                    <span class="sub-title">18시간전</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="border top">
+                        <div class="pdd-vertical-15 pdd-horizon-20 text-center">
+                            <a href="" class="text-semibold text-dark">More...</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js"></script>
+<script src="https://unpkg.com/popper.js/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.bundle.min.js"
+        integrity="sha384-pjaaA8dDz/5BgdFUPX6M/9SUZv4d12SUPF0axWc+VRZkx5xU3daN+lYb49+Ax+Tl"
+        crossorigin="anonymous"></script>
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<script src="/js/vue-objects.js"></script>
+<script src="/js/common.js"></script>
+<script src="/js/profile.js"></script>
+
+</body>
+</html>

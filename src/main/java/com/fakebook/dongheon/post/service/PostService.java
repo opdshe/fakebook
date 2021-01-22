@@ -5,10 +5,15 @@ import com.fakebook.dongheon.member.domain.Member;
 import com.fakebook.dongheon.post.domain.CustomPostRepository;
 import com.fakebook.dongheon.post.domain.Post;
 import com.fakebook.dongheon.post.web.dto.PostRegisterDto;
+import com.fakebook.dongheon.post.web.dto.PostResponseDto;
 import com.fakebook.dongheon.security.exception.NotAuthorizedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -24,18 +29,44 @@ public class PostService {
 
 	@Transactional
 	public void delete(Long id, String loginUserId) {
-		Post post = customPostRepository.findById(id);
 		Member loginUser = customMemberRepository.findByUserId(loginUserId);
+		Post post = customPostRepository.findById(id);
 		validateAuthority(post, loginUser);
 		customPostRepository.delete(post);
 	}
 
 	@Transactional
 	public void update(Long id, PostRegisterDto dto, String loginUserId) {
-		Post post = customPostRepository.findById(id);
 		Member loginUser = customMemberRepository.findByUserId(loginUserId);
+		Post post = customPostRepository.findById(id);
 		validateAuthority(post, loginUser);
 		post.update(dto);
+	}
+
+	@Transactional
+	public List<PostResponseDto> getFeedPosts(String loginUserId) {
+		Member loginUser = customMemberRepository.findByUserId(loginUserId);
+		return customPostRepository.findAll().stream()
+				.sorted(Comparator.comparing(Post::getPostDate).reversed())
+				.map(post -> PostResponseDto.of(post, loginUser))
+				.collect(Collectors.toList());
+	}
+
+	@Transactional
+	public List<PostResponseDto> getProfilePosts(Long memberId, String loginUserId) {
+		Member loginUser = customMemberRepository.findByUserId(loginUserId);
+		Member member = customMemberRepository.findById(memberId);
+		return customPostRepository.findAllByMember(member).stream()
+				.sorted(Comparator.comparing(Post::getPostDate).reversed())
+				.map(post -> PostResponseDto.of(post, loginUser))
+				.collect(Collectors.toList());
+	}
+
+	@Transactional
+	public Integer like(Long postId, String loginUserId) {
+		Member member = customMemberRepository.findByUserId(loginUserId);
+		Post post = customPostRepository.findById(postId);
+		return member.likePost(post);
 	}
 
 	private static void validateAuthority(Post post, Member loginUser) {
