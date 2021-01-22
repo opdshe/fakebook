@@ -20,6 +20,7 @@
 
     <link rel="stylesheet" href="/css/app.css">
     <link rel="stylesheet" href="/css/feed.css">
+    <link rel="stylesheet" href="/css/profile.css">
 </head>
 <body>
 <div id="fakebook-app">
@@ -68,17 +69,13 @@
                     </div>
                 </div>
             </div>
-            <!--------------------------게시글 작성 카드 ---------------------------------->
             <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
-                <div class="social-feeds">
-                    <post-register-card v-bind:user="user.name"
-                                        v-bind:placeholder="placeholder"></post-register-card>
-                </div>
+                <!----------------------프로필 ------------------------->
+                <profile v-bind:target="target"></profile>
                 <!----------------------게시글 ------------------------->
                 <post v-for="post in posts"
                       v-bind:key="post.id"
-                      v-bind:post="post"
-                      v-bind:user="user">
+                      v-bind:post="post">
                 </post>
             </div>
             <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 pdd-right-0">
@@ -145,7 +142,7 @@
 
 <script src="/js/vue-objects.js"></script>
 <script src="/js/common.js"></script>
-<script src="/js/feed.js"></script>
+<script src="/js/profile.js"></script>
 
 </body>
 </html>

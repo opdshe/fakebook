@@ -1,5 +1,6 @@
 package com.fakebook.dongheon.post.domain;
 
+import com.fakebook.dongheon.member.domain.Member;
 import com.fakebook.dongheon.post.exception.PostNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -13,6 +14,10 @@ public class CustomPostRepository {
 
 	public List<Post> findAll() {
 		return postRepository.findAll();
+	}
+
+	public List<Post> findAllByMember(Member member) {
+		return postRepository.findAllByMember(member);
 	}
 
 	public Post findById(Long id) {

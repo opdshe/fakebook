@@ -4,6 +4,7 @@ import com.fakebook.dongheon.member.domain.CustomMemberRepository;
 import com.fakebook.dongheon.member.domain.Member;
 import com.fakebook.dongheon.member.exception.AlreadyExistMemberIdException;
 import com.fakebook.dongheon.member.web.dto.MemberRegisterDto;
+import com.fakebook.dongheon.member.web.dto.MemberResponseDto;
 import com.fakebook.dongheon.security.exception.NotAuthorizedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -36,6 +37,10 @@ public class MemberService {
 		validateAuthority(id);
 		Member member = memberRepository.findById(id);
 		memberRepository.delete(member);
+	}
+
+	public MemberResponseDto getMemberById(Long id) {
+		return memberRepository.findMemberById(id);
 	}
 
 	private void validateAuthority(Long id) {

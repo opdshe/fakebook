@@ -1,6 +1,7 @@
 package com.fakebook.dongheon.member.domain;
 
 import com.fakebook.dongheon.member.exception.MemberNotFoundException;
+import com.fakebook.dongheon.member.web.dto.MemberResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -16,6 +17,18 @@ public class CustomMemberRepository {
 
 	public Member findById(Long id) {
 		return memberRepository.findById(id)
+				.orElseThrow(MemberNotFoundException::new);
+	}
+
+	public MemberResponseDto findMemberById(Long id) {
+		return memberRepository.findById(id)
+				.map(MemberResponseDto::of)
+				.orElseThrow(MemberNotFoundException::new);
+	}
+
+	public MemberResponseDto findMemberByUserId(String userId) {
+		return memberRepository.findByUserId(userId)
+				.map(MemberResponseDto::of)
 				.orElseThrow(MemberNotFoundException::new);
 	}
 

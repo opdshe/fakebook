@@ -44,9 +44,19 @@ public class PostService {
 	}
 
 	@Transactional
-	public List<PostResponseDto> findAllOrderByPostDate(String loginUserId) {
+	public List<PostResponseDto> getFeedPosts(String loginUserId) {
 		Member loginUser = customMemberRepository.findByUserId(loginUserId);
 		return customPostRepository.findAll().stream()
+				.sorted(Comparator.comparing(Post::getPostDate).reversed())
+				.map(post -> PostResponseDto.of(post, loginUser))
+				.collect(Collectors.toList());
+	}
+
+	@Transactional
+	public List<PostResponseDto> getProfilePosts(Long memberId, String loginUserId) {
+		Member loginUser = customMemberRepository.findByUserId(loginUserId);
+		Member member = customMemberRepository.findById(memberId);
+		return customPostRepository.findAllByMember(member).stream()
 				.sorted(Comparator.comparing(Post::getPostDate).reversed())
 				.map(post -> PostResponseDto.of(post, loginUser))
 				.collect(Collectors.toList());

@@ -13,6 +13,7 @@ public class PostResponseDto {
 	private Long id;
 	private String content;
 	private String poster;
+	private Long posterId;
 	private String youtubeUrl;
 	private List<CommentResponseDto> comments;
 	private boolean hasLiked;
@@ -23,6 +24,7 @@ public class PostResponseDto {
 		dto.id = post.getId();
 		dto.content = post.getContent();
 		dto.poster = post.getMember().getName();
+		dto.posterId = post.getMember().getId();
 		dto.comments = post.getComments().stream()
 				.map(comment -> CommentResponseDto.of(comment, loginUser))
 				.collect(Collectors.toList());

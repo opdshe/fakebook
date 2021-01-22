@@ -1,0 +1,11 @@
+#profile {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    text-align: center;
+}
+
+#profile-img {
+    position: relative;
+    left: 34.5%;
+}

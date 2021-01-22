@@ -33,9 +33,15 @@ public class PostApiController {
 	}
 
 	@GetMapping("/posts")
-	public List<PostResponseDto> findAllOrderByPostDate(Principal principal) {
+	public List<PostResponseDto> getFeedPosts(Principal principal) {
 		String loginUserId = principal.getName();
-		return postService.findAllOrderByPostDate(loginUserId);
+		return postService.getFeedPosts(loginUserId);
+	}
+
+	@GetMapping("/posts/{memberId}")
+	public List<PostResponseDto> getProfilePosts(@PathVariable Long memberId, Principal principal) {
+		String loginUserId = principal.getName();
+		return postService.getProfilePosts(memberId, loginUserId);
 	}
 
 	@PostMapping("/post/like/{postId}")
