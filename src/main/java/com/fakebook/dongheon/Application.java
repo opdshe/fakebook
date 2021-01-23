@@ -34,8 +34,8 @@ public class Application implements CommandLineRunner {
 				.build();
 		customMemberRepository.save(sampleMember);
 
-		String youtubeUrl = "https://www.youtube.com/embed/1yXZIFYv4SE";
-		Post samplePost = new Post("요즘 공부할 때 듣는 노래", sampleMember, youtubeUrl);
+		String youtubeUrl = "//www.youtube.com/embed/1yXZIFYv4SE";
+		Post samplePost = new Post("나중에 파리가서 들어야지..👏🏻", sampleMember, youtubeUrl);
 		customPostRepository.save(samplePost);
 	}
 }
