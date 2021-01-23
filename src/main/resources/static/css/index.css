@@ -46,6 +46,7 @@
 
 
 .div-birthday {
+    display: block;
     margin-top: 10px;
 }
 
@@ -62,16 +63,27 @@
 }
 
 .div-gender {
-    display: flex;
-    flex-direction: column;
+    display: block;
+    margin-top: 10px;
+}
+
+.div-gender .join-span-gender {
+    display: block;
+    margin-top: 10px;
+    width: 200px;
 }
 
 .label-gender {
     font-size: 25px;
 }
 
+.div-join-button {
+    display: flex;
+}
+
 .submit-join {
     width: 250px;
     height: 40px;
-    margin-top: 10px
+    margin-top: 10px;
 }
+
