@@ -47,7 +47,7 @@ public class PostService {
 	public List<PostResponseDto> getFeedPosts(String loginUserId) {
 		Member loginUser = customMemberRepository.findByUserId(loginUserId);
 		return customPostRepository.findAll().stream()
-				.sorted(Comparator.comparing(Post::getPostDate).reversed())
+				.sorted(Comparator.comparing(Post::getPostDateTime).reversed())
 				.map(post -> PostResponseDto.of(post, loginUser))
 				.collect(Collectors.toList());
 	}
@@ -57,7 +57,7 @@ public class PostService {
 		Member loginUser = customMemberRepository.findByUserId(loginUserId);
 		Member member = customMemberRepository.findById(memberId);
 		return customPostRepository.findAllByMember(member).stream()
-				.sorted(Comparator.comparing(Post::getPostDate).reversed())
+				.sorted(Comparator.comparing(Post::getPostDateTime).reversed())
 				.map(post -> PostResponseDto.of(post, loginUser))
 				.collect(Collectors.toList());
 	}
