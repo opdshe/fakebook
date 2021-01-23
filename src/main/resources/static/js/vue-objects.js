@@ -66,8 +66,9 @@ Vue.component('left-nav', {
         '            <a class="pointer">\n' +
         '                <img class="img-circle width-25px" src="/images/default/profile-default.png">\n' +
         '                <div class="left-name-edit pointer">\n' +
-        '                    <a class="left-name" style="color: black"\n' +
-        '                       v-bind:href="`/profile?memberId=${user.id}`">{{user.name}}</a>\n' +
+        '                    <a v-bind:href="`/profile?memberId=${user.id}`">\n' +
+        '                       <span class="name text-dark text-bold" >{{user.name}}</span>\n' +
+        '                    </a>\n' +
         '                </div>\n' +
         '            </a>\n' +
         '        </div>\n' +
@@ -217,7 +218,7 @@ Vue.component('post', {
         '                <div class="info">\n' +
         '                    <a v-bind:href="`/profile?memberId=${post.posterId}`" class="title no-pdd-vertical ' +
         '                       text-bold text-semibold inline-block" style="font-weight: bold">{{post.poster}}</a>\n' +
-        '                    <span class="sub-title">15시간</span>\n' +
+        '                    <span class="sub-title">{{post.pastTime}}</span>\n' +
         '                    <a class="pointer absolute top-0 right-0" data-toggle="dropdown"\n' +
         '                       aria-expanded="false">\n' +
         '                        <span class="btn-icon text-dark">\n' +

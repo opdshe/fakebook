@@ -33,7 +33,7 @@ public class Post extends JpaBaseEntity {
 	private Member member;
 
 	@Column(name = "post_date")
-	private LocalDateTime postDate;
+	private LocalDateTime postDateTime;
 
 	@Column(name = "post_like")
 	private Integer like = 0;
@@ -51,14 +51,14 @@ public class Post extends JpaBaseEntity {
 	public Post(String content, Member member) {
 		this.content = content;
 		this.member = member;
-		this.postDate = LocalDateTime.now();
+		this.postDateTime = LocalDateTime.now();
 	}
 
 	public Post(String content, Member member, String youtubeUrl) {
 		this.content = content;
 		this.member = member;
 		this.youtubeUrl = youtubeUrl;
-		this.postDate = LocalDateTime.now();
+		this.postDateTime = LocalDateTime.now();
 	}
 
 	public void update(PostRegisterDto dto) {
