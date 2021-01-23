@@ -11,6 +11,7 @@
 
     <link rel="stylesheet" href="/css/app.css">
     <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/common.css">
 </head>
 <body>
 <div id="login-app">
@@ -24,7 +25,7 @@
                     <th>비밀번호</th>
                     <tr>
                         <td><input type="text" name="username" v-model="username"></td>
-                            <td><input type="password" name="password" v-model="password"></td>
+                        <td><input type="password" name="password" v-model="password"></td>
                         <td><input type="submit" value="로그인"></td>
                     </tr>
                 </table>
@@ -43,21 +44,21 @@
             <div class="div-birthday" id="div-birthday">
                 <span style="margin-top: 30px">생일</span>
                 <span class="join-span-birthday">
-                <select class="birthday-select" id="birthday-year" aria-label="연도"
-                        name="birthdayYear" v-model="birthdayYear">
-                    <option>연도</option>
-                    <option v-for="year in years" v-bind:value="year">{{year}}</option>
-                </select>
-                <select class="birthday-select" id="birthday-month" aria-label="월"
-                        name="birthdayMonth" v-model="birthdayMonth">
-                    <option value="월">월</option>
-                    <option v-for="month in months" v-bind:value="month">{{month}}</option>
-                </select>
-                <select class="birthday-select" id="birthday-day" aria-label="일"
-                        name="birthdayDay" v-model="birthdayDay">
-                    <option value="일">일</option>
-                    <option v-for="day in days" v-bind:value="day">{{day}}</option>
-                </select>
+                    <select class="birthday-select" id="birthday-year" aria-label="연도"
+                            name="birthdayYear" v-model="birthdayYear">
+                        <option>연도</option>
+                        <option v-for="year in years" v-bind:value="year">{{year}}</option>
+                    </select>
+                    <select class="birthday-select" id="birthday-month" aria-label="월"
+                            name="birthdayMonth" v-model="birthdayMonth">
+                        <option value="월">월</option>
+                        <option v-for="month in months" v-bind:value="month">{{month}}</option>
+                    </select>
+                    <select class="birthday-select" id="birthday-day" aria-label="일"
+                            name="birthdayDay" v-model="birthdayDay">
+                        <option value="일">일</option>
+                        <option v-for="day in days" v-bind:value="day">{{day}}</option>
+                    </select>
                 </span>
             </div>
 
@@ -79,7 +80,9 @@
                 <li v-for="error in errors">{{error}}</li>
             </ul>
             </p>
-            <input type="submit" class="submit-join" value="가입하기">
+            <div class="div-join-button">
+                <input type="submit" class="submit-join" value="가입하기">
+            </div>
         </form>
     </div>
 </div>
