@@ -56,6 +56,53 @@ Vue.component('upper-nav-bar', {
         '</header>',
 })
 
+//좌측 네비게이션
+Vue.component('left-nav', {
+    props: ['user'],
+    template:
+        '<div id="left-profile-container" class="col-lg-2 col-md-2 col-sm-2 col-xs-2">\n' +
+        '    <div class="left">\n' +
+        '        <div class="left-profile">\n' +
+        '            <a class="pointer">\n' +
+        '                <img class="img-circle width-25px" src="/images/default/profile-default.png">\n' +
+        '                <div class="left-name-edit pointer">\n' +
+        '                    <a v-bind:href="`/profile?memberId=${user.id}`">\n' +
+        '                       <span class="name text-dark text-bold" >{{user.name}}</span>\n' +
+        '                    </a>\n' +
+        '                </div>\n' +
+        '            </a>\n' +
+        '        </div>\n' +
+        '        <div class="left-menus">\n' +
+        '            <ul class="left-sub-menus">\n' +
+        '                <li class="left-sub-sub-menus mrg-btm-5 pointer">\n' +
+        '                    <div class="icons newspeed"></div>\n' +
+        '                    <span class="icon-name">  뉴스피드</span>\n' +
+        '                </li>\n' +
+        '                <li class="left-sub-sub-menus mrg-btm-5 pointer">\n' +
+        '                    <div class="icons message"></div>\n' +
+        '                    <span class="icon-name">  Messenger</span>\n' +
+        '                </li>\n' +
+        '                <li class="left-sub-sub-menus mrg-btm-5 pointer">\n' +
+        '                    <div class="icons watch"></div>\n' +
+        '                    <span class="icon-name">  Watch</span>\n' +
+        '                </li>\n' +
+        '            </ul>\n' +
+        '            <ul class="left-sub-menus">\n' +
+        '                <div class="left-group-title">바로가기</div>\n' +
+        '                <li class="left-sub-sub-menus pointer">\n' +
+        '                    <div class="icons group"></div>\n' +
+        '                    <span class="icon-name">  알고리즘 스터디</span>\n' +
+        '                </li>\n' +
+        '                <li class="left-sub-sub-menus pointer">\n' +
+        '                    <div class="icons group"></div>\n' +
+        '                    <span class="icon-name">  이동헌과 친구들</span>\n' +
+        '                </li>\n' +
+        '            </ul>\n' +
+        '        </div>\n' +
+        '    </div>\n' +
+        '</div>'
+})
+
 //게시글 댓글
 Vue.component('comment', {
     props: ['comments', 'postId'],
@@ -171,7 +218,7 @@ Vue.component('post', {
         '                <div class="info">\n' +
         '                    <a v-bind:href="`/profile?memberId=${post.posterId}`" class="title no-pdd-vertical ' +
         '                       text-bold text-semibold inline-block" style="font-weight: bold">{{post.poster}}</a>\n' +
-        '                    <span class="sub-title">15시간</span>\n' +
+        '                    <span class="sub-title">{{post.pastTime}}</span>\n' +
         '                    <a class="pointer absolute top-0 right-0" data-toggle="dropdown"\n' +
         '                       aria-expanded="false">\n' +
         '                        <span class="btn-icon text-dark">\n' +
