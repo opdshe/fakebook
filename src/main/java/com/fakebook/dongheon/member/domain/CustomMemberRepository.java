@@ -20,6 +20,11 @@ public class CustomMemberRepository {
 				.orElseThrow(MemberNotFoundException::new);
 	}
 
+	public Member findWithFriendsById(Long id) {
+		return memberRepository.findWithFriendsById(id)
+				.orElseThrow(MemberNotFoundException::new);
+	}
+
 	public MemberResponseDto findMemberById(Long id) {
 		return memberRepository.findById(id)
 				.map(MemberResponseDto::of)

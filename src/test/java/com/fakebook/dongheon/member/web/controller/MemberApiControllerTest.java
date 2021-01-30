@@ -3,7 +3,9 @@ package com.fakebook.dongheon.member.web.controller;
 import com.fakebook.dongheon.member.domain.CustomMemberRepository;
 import com.fakebook.dongheon.member.domain.Gender;
 import com.fakebook.dongheon.member.domain.Member;
+import com.fakebook.dongheon.member.service.MemberService;
 import com.fakebook.dongheon.member.web.dto.MemberRegisterDto;
+import com.fakebook.dongheon.post.domain.CustomPostRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -19,13 +21,15 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class MemberApiControllerTest {
-	private static final String MY_ACCOUNT_ID = "myAccount";
+	private static final String MY_USER_ID = "myAccount";
+	private static final String FRIEND_USER_ID = "friend";
 	private static final String REGISTER_URL = "/member/register";
 	private static final String DELETE_URL = "/member/delete";
 	private static final String UPDATE_URL = "/member/update";
@@ -36,13 +40,22 @@ class MemberApiControllerTest {
 	@Autowired
 	private CustomMemberRepository customMemberRepository;
 
+	@Autowired
+	private CustomPostRepository customPostRepository;
+
+	@Autowired
+	private MemberService memberService;
+
 	private static MockMvc mvc;
 
 	@BeforeAll
 	public void setUp() {
 		mvc = MockMvcBuilders
 				.webAppContextSetup(context)
+				.apply(springSecurity())
 				.build();
+		customPostRepository.deleteAll();
+		customMemberRepository.deleteAll();
 	}
 
 	@AfterEach
@@ -67,7 +80,7 @@ class MemberApiControllerTest {
 		assertThat(isExistUserId).isTrue();
 	}
 
-	@WithMockUser(username = MY_ACCOUNT_ID)
+	@WithMockUser(username = MY_USER_ID)
 	@Test
 	void Member_삭제_기능_컨트롤러_테스트() throws Exception {
 		//given
@@ -112,8 +125,52 @@ class MemberApiControllerTest {
 		assertThat(editedMember.getUserId()).isEqualTo(editedUserId);
 	}
 
+	@WithMockUser(username = MY_USER_ID)
+	@Test
+	void 친구추가_컨트롤러_테스트() throws Exception {
+		//given
+		MemberRegisterDto myAccountDto = getTestDto();
+		Long myMemberId = memberService.register(myAccountDto);
+
+		MemberRegisterDto friendAccountDto = getTestDto();
+		friendAccountDto.setUserId(FRIEND_USER_ID);
+		Long friendMemberId = memberService.register(friendAccountDto);
+
+		//when
+		mvc.perform(post("/member/friend/{id}", friendMemberId));
+		Member myAccount = customMemberRepository.findWithFriendsById(myMemberId);
+		Member friendAccount = customMemberRepository.findWithFriendsById(friendMemberId);
+
+		//then
+		assertThat(myAccount.getFriends()).contains(friendAccount);
+		assertThat(friendAccount.getFriends()).contains(myAccount);
+	}
+
+	@WithMockUser(username = MY_USER_ID)
+	@Test
+	void 친구삭제_컨트롤러_테스트() throws Exception {
+		//given
+		MemberRegisterDto myAccountDto = getTestDto();
+		Long myMemberId = memberService.register(myAccountDto);
+
+		MemberRegisterDto friendAccountDto = getTestDto();
+		friendAccountDto.setUserId(FRIEND_USER_ID);
+		Long friendMemberId = memberService.register(friendAccountDto);
+
+		memberService.befriend(friendMemberId, MY_USER_ID);
+
+		//when
+		mvc.perform(delete("/member/friend/{id}", friendMemberId));
+		Member myAccount = customMemberRepository.findWithFriendsById(myMemberId);
+		Member friendAccount = customMemberRepository.findWithFriendsById(friendMemberId);
+
+		//then
+		assertThat(myAccount.getFriends()).doesNotContain(friendAccount);
+		assertThat(friendAccount.getFriends()).doesNotContain(myAccount);
+	}
+
 	private static MemberRegisterDto getTestDto() {
-		String userID = MY_ACCOUNT_ID;
+		String userID = MY_USER_ID;
 		String password = "testPW";
 		String name = "이동헌";
 		int birthdayYear = 1995;
