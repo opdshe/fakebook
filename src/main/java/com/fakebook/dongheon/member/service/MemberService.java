@@ -39,6 +39,20 @@ public class MemberService {
 		memberRepository.delete(member);
 	}
 
+	@Transactional
+	public void befriend(Long id, String loginUserId) {
+		Member loginUser = memberRepository.findByUserId(loginUserId);
+		Member target = memberRepository.findById(id);
+		loginUser.befriend(target);
+	}
+
+	@Transactional
+	public void unfriend(Long id, String loginUserId) {
+		Member loginUser = memberRepository.findByUserId(loginUserId);
+		Member target = memberRepository.findById(id);
+		loginUser.unfriend(target);
+	}
+
 	public MemberResponseDto getMemberById(Long id) {
 		return memberRepository.findMemberById(id);
 	}

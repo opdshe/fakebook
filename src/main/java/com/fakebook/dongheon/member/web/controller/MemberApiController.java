@@ -6,6 +6,8 @@ import com.fakebook.dongheon.member.web.dto.MemberResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @RequestMapping("/member")
 @RequiredArgsConstructor
 @RestController
@@ -25,6 +27,18 @@ public class MemberApiController {
 	@DeleteMapping("/delete/{id}")
 	public void delete(@PathVariable Long id) {
 		memberService.delete(id);
+	}
+
+	@PostMapping("/friend/{id}")
+	public void befriend(@PathVariable Long id, Principal principal) {
+		String loginUserId = principal.getName();
+		memberService.befriend(id, loginUserId);
+	}
+
+	@DeleteMapping("/friend/{id}")
+	public void unfriend(@PathVariable Long id, Principal principal) {
+		String loginUserId = principal.getName();
+		memberService.unfriend(id, loginUserId);
 	}
 
 	@GetMapping("/{id}")

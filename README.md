@@ -1,5 +1,7 @@
 # 👨🏻‍💻 페이스북 클론 프로젝트 (작성 중)
 
+# http://www.fakebook.r-e.kr/
+
 사용 기술 : 
 
 Spring boot, JPA, MySQL, H2, Vue.js, Jenkins
