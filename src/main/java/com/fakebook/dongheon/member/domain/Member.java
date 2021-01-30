@@ -67,9 +67,14 @@ public class Member extends JpaBaseEntity {
 		return post.like();
 	}
 
-	public void beFriend(Member member) {
+	public void befriend(Member member) {
 		friends.add(member);
 		member.friends.add(this);
+	}
+
+	public void unfriend(Member member) {
+		friends.remove(member);
+		member.friends.remove(this);
 	}
 
 	private boolean hasAlreadyLiked(Comment comment) {

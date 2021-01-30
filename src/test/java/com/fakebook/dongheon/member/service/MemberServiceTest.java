@@ -23,6 +23,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 @SpringBootTest
 public class MemberServiceTest {
 	private static final String MY_USER_ID = "dongheon";
+	private static final String FRIEND_USER_ID = "friend";
 
 	@Autowired
 	private CustomMemberRepository customMemberRepository;
@@ -139,17 +140,40 @@ public class MemberServiceTest {
 		Long myMemberId = memberService.register(myAccountDto);
 
 		MemberRegisterDto friendDto = getTestMemberDto();
-		friendDto.setUserId("friendId");
+		friendDto.setUserId(FRIEND_USER_ID);
 		Long friendMemberId = memberService.register(friendDto);
 
 		//when
-		memberService.beFriend(friendMemberId, MY_USER_ID);
+		memberService.befriend(friendMemberId, MY_USER_ID);
 		Member myAccount = customMemberRepository.findWithFriendsById(myMemberId);
 		Member friendAccount = customMemberRepository.findWithFriendsById(friendMemberId);
 
 		//then
 		assertThat(myAccount.getFriends()).contains(friendAccount);
 		assertThat(friendAccount.getFriends()).contains(myAccount);
+	}
+
+	@WithMockUser(username = MY_USER_ID)
+	@Test
+	void 친구삭제_동작_확인() {
+		//given
+		MemberRegisterDto myAccountDto = getTestMemberDto();
+		Long myMemberId = memberService.register(myAccountDto);
+
+		MemberRegisterDto friendDto = getTestMemberDto();
+		friendDto.setUserId(FRIEND_USER_ID);
+		Long friendMemberId = memberService.register(friendDto);
+
+		memberService.befriend(friendMemberId, MY_USER_ID);
+
+		//when
+		memberService.unfriend(friendMemberId, MY_USER_ID);
+		Member myAccount = customMemberRepository.findWithFriendsById(myMemberId);
+		Member friendAccount = customMemberRepository.findWithFriendsById(friendMemberId);
+
+		//then
+		assertThat(myAccount.getFriends()).doesNotContain(friendAccount);
+		assertThat(friendAccount.getFriends()).doesNotContain(myAccount);
 	}
 
 	public static MemberRegisterDto getTestMemberDto() {

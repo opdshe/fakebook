@@ -40,10 +40,17 @@ public class MemberService {
 	}
 
 	@Transactional
-	public void beFriend(Long id, String loginUserId) {
+	public void befriend(Long id, String loginUserId) {
 		Member loginUser = memberRepository.findByUserId(loginUserId);
 		Member target = memberRepository.findById(id);
-		loginUser.beFriend(target);
+		loginUser.befriend(target);
+	}
+
+	@Transactional
+	public void unfriend(Long id, String loginUserId) {
+		Member loginUser = memberRepository.findByUserId(loginUserId);
+		Member target = memberRepository.findById(id);
+		loginUser.unfriend(target);
 	}
 
 	public MemberResponseDto getMemberById(Long id) {

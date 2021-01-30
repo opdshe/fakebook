@@ -30,9 +30,15 @@ public class MemberApiController {
 	}
 
 	@PostMapping("/friend/{id}")
-	public void beFriend(@PathVariable Long id, Principal principal) {
+	public void befriend(@PathVariable Long id, Principal principal) {
 		String loginUserId = principal.getName();
-		memberService.beFriend(id, loginUserId);
+		memberService.befriend(id, loginUserId);
+	}
+
+	@DeleteMapping("/friend/{id}")
+	public void unfriend(@PathVariable Long id, Principal principal) {
+		String loginUserId = principal.getName();
+		memberService.unfriend(id, loginUserId);
 	}
 
 	@GetMapping("/{id}")
