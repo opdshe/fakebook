@@ -8,8 +8,10 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
-@EqualsAndHashCode(exclude = {"id", "password"}, callSuper = false)
+@EqualsAndHashCode(exclude = {"id", "password", "friends"}, callSuper = false)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
@@ -35,6 +37,10 @@ public class Member extends JpaBaseEntity {
 	@Column(name = "gender", nullable = false)
 	private Gender gender;
 
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "friends_relations")
+	private Set<Member> friends = new HashSet<>();
+
 	public void update(MemberRegisterDto dto) {
 		this.userId = dto.getUserId();
 		this.password = dto.getPassword();
@@ -59,6 +65,11 @@ public class Member extends JpaBaseEntity {
 		}
 		post.getPeopleWhoLikeThis().add(this);
 		return post.like();
+	}
+
+	public void beFriend(Member member) {
+		friends.add(member);
+		member.friends.add(this);
 	}
 
 	private boolean hasAlreadyLiked(Comment comment) {

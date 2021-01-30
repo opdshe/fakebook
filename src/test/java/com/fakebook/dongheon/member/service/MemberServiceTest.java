@@ -6,9 +6,12 @@ import com.fakebook.dongheon.member.domain.Member;
 import com.fakebook.dongheon.member.exception.AlreadyExistMemberIdException;
 import com.fakebook.dongheon.member.exception.MemberNotFoundException;
 import com.fakebook.dongheon.member.web.dto.MemberRegisterDto;
+import com.fakebook.dongheon.post.domain.CustomPostRepository;
 import com.fakebook.dongheon.security.exception.NotAuthorizedException;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -16,13 +19,25 @@ import org.springframework.security.test.context.support.WithMockUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest
 public class MemberServiceTest {
+	private static final String MY_USER_ID = "dongheon";
+
 	@Autowired
 	private CustomMemberRepository customMemberRepository;
 
 	@Autowired
+	private CustomPostRepository customPostRepository;
+
+	@Autowired
 	private MemberService memberService;
+
+	@BeforeAll
+	void setUp() {
+		customPostRepository.deleteAll();
+		customMemberRepository.deleteAll();
+	}
 
 	@AfterEach
 	void clearUp() {
@@ -76,7 +91,7 @@ public class MemberServiceTest {
 	@Test
 	void 회원정보_수정시_중복되는_ID는_예외발생() {
 		//given
-		String duplicatedId = "testId";
+		String duplicatedId = MY_USER_ID;
 		MemberRegisterDto originMember = getTestMemberDto();
 		MemberRegisterDto updateMember = getTestMemberDto();
 		customMemberRepository.save(originMember.toEntity());
@@ -87,7 +102,7 @@ public class MemberServiceTest {
 				.isThrownBy(() -> memberService.update(id, updateMember));
 	}
 
-	@WithMockUser(username = "testID")
+	@WithMockUser(username = MY_USER_ID)
 	@Test
 	void 회원_삭제_동작_확인() {
 		//given
@@ -116,8 +131,29 @@ public class MemberServiceTest {
 				.isThrownBy(() -> memberService.delete(id));
 	}
 
+	@WithMockUser(username = MY_USER_ID)
+	@Test
+	void 친구추가_동작_확인() {
+		//given
+		MemberRegisterDto myAccountDto = getTestMemberDto();
+		Long myMemberId = memberService.register(myAccountDto);
+
+		MemberRegisterDto friendDto = getTestMemberDto();
+		friendDto.setUserId("friendId");
+		Long friendMemberId = memberService.register(friendDto);
+
+		//when
+		memberService.beFriend(friendMemberId, MY_USER_ID);
+		Member myAccount = customMemberRepository.findWithFriendsById(myMemberId);
+		Member friendAccount = customMemberRepository.findWithFriendsById(friendMemberId);
+
+		//then
+		assertThat(myAccount.getFriends()).contains(friendAccount);
+		assertThat(friendAccount.getFriends()).contains(myAccount);
+	}
+
 	public static MemberRegisterDto getTestMemberDto() {
-		String userID = "testID";
+		String userID = MY_USER_ID;
 		String password = "testPW";
 		String name = "이동헌";
 		int birthdayYear = 1995;
