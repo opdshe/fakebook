@@ -353,17 +353,17 @@ Vue.component('profile', {
 Vue.component('chat-card', {
     props: ['target', 'user'],
     template:
-        '<div class = "chat-tab" v-if="target.name!=user.name">\n' +
+        '<div id="chat-tab" class = "chat-tab">\n' +
         '   <div class="chat-profile">\n' +
         '        <img class="profile-img" style="border-radius: 10px" src="/images/default/profile-default.png" alt="">\n' +
-        '        <span class="name pdd-right-5 text-black text-bold" style=" cursor: pointer">{{target.name}}</span>\n' +
+        '        <span class="name pdd-right-5 text-black text-bold" style=" cursor: pointer">{{target}}</span>\n' +
         '        <hr style="color: black;">\n' +
         '   </div>\n' +
-        '   <ul class="chat-box">\n' +
+        '   <ul id="messages" class="chat-box">\n' +
         '   </ul>\n' +
-        '   <div class="add-comment" style="height: 30px; width: 100%; position: relative;">' +
-        '       <textarea rows="1" placeholder="메세지를 입력하세요.."style="width: 85%; height: 100%; float: left;"></textarea> ' +
-        '       <input type="submit" value="전송" style="width: 15%; height: 100%; margin-left:10px; float: left; position: absolute;">' +
-        '   </div>' +
+        '   <form id="chat-form" style="height: 30px; width: 100%; position: relative;">\n' +
+        '       <textarea id ="message" rows="1" placeholder="메세지를 입력하세요.." style="width: 85%; height: 100%; float: left;"></textarea>\n' +
+        '       <input id="send" type="submit"  value="전송" style="width: 13%; height:100%; margin-left:2% ">\n' +
+        '   </form>\n' +
         '</div>'
 })

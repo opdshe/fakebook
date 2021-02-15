@@ -25,17 +25,25 @@ public class Application implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		Member sampleMember = Member.builder()
+		Member dongheon = Member.builder()
 				.userId("test")
 				.password(new BCryptPasswordEncoder().encode("1234"))
 				.birthday(LocalDate.of(1995, 8, 22))
 				.name("이동헌")
 				.gender(Gender.MALE)
 				.build();
-		customMemberRepository.save(sampleMember);
+		Member minsub = Member.builder()
+				.userId("aaa")
+				.password(new BCryptPasswordEncoder().encode("aaa"))
+				.birthday(LocalDate.of(1995, 8, 22))
+				.name("김민섭")
+				.gender(Gender.MALE)
+				.build();
+		customMemberRepository.save(dongheon);
+		customMemberRepository.save(minsub);
 
 		String youtubeUrl = "https://www.youtube.com/embed/XAwEz-_sg9k";
-		Post samplePost = new Post("공부할 땐 역시 로파이지~👍🏻", sampleMember, youtubeUrl);
+		Post samplePost = new Post("공부할 땐 역시 로파이지~👍🏻", dongheon, youtubeUrl);
 		customPostRepository.save(samplePost);
 	}
 }
