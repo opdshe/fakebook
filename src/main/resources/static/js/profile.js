@@ -64,8 +64,8 @@ let stomp = {
         stompClient = Stomp.over(socket);
         stompClient.connect({}, function (frame) {
             console.log('Connected: ' + frame);
-            stompClient.subscribe('/topic/public-message', function (greeting) {
-                _this.receive(JSON.parse(greeting.body).content);
+            stompClient.subscribe('/queue/' + profile.user.id, function (chatMessage) {
+                _this.showMessage(JSON.parse(chatMessage.body).content);
             });
         });
     },
@@ -79,14 +79,20 @@ let stomp = {
         });
     },
     send: function () {
+        let _this = this;
         let content = $('#message').val();
-        stompClient.send("/app/hello", {}, JSON.stringify({'content': content}));
+        let message = {
+            'sender': profile.user.id,
+            'receiver': profile.target.id,
+            'content': content,
+        };
+        stompClient.send("/app/send", {}, JSON.stringify(message));
+        _this.showMessage(content);
     },
-    receive: function (message) {
+    showMessage: function (message) {
         $("#messages").append("<tr><td>" + message + "</td></tr>");
     }
 }
-
 stomp.connect();
 
 

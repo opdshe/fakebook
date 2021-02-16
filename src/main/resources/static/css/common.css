@@ -23,7 +23,7 @@ input {
     position: fixed;
     float: bottom;
     height: 400px;
-    width: 350px;
+    width: 25%;
     display: flex;
     color: #1c1e21;
     flex-direction: column;
