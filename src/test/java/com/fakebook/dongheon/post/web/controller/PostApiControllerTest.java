@@ -1,7 +1,7 @@
 package com.fakebook.dongheon.post.web.controller;
 
-import com.fakebook.dongheon.member.domain.CustomMemberRepository;
 import com.fakebook.dongheon.member.domain.Member;
+import com.fakebook.dongheon.member.domain.MemberRepositoryCustom;
 import com.fakebook.dongheon.member.web.dto.MemberRegisterDto;
 import com.fakebook.dongheon.post.domain.CustomPostRepository;
 import com.fakebook.dongheon.post.domain.Post;
@@ -39,7 +39,7 @@ class PostApiControllerTest {
 	private CustomPostRepository customPostRepository;
 
 	@Autowired
-	private CustomMemberRepository customMemberRepository;
+	private MemberRepositoryCustom memberRepositoryCustom;
 
 	@Autowired
 	private PostService postService;
@@ -60,8 +60,8 @@ class PostApiControllerTest {
 		memberDto.setUserId(ANOTHER_PERSON_ACCOUNT_ID);
 		Member anotherPersonAccount = memberDto.toEntity();
 
-		customMemberRepository.save(myAccount);
-		customMemberRepository.save(anotherPersonAccount);
+		memberRepositoryCustom.save(myAccount);
+		memberRepositoryCustom.save(anotherPersonAccount);
 	}
 
 	@AfterEach
@@ -71,7 +71,7 @@ class PostApiControllerTest {
 
 	@AfterAll
 	void clearUp() {
-		customMemberRepository.deleteAll();
+		memberRepositoryCustom.deleteAll();
 	}
 
 	@WithMockUser(username = MY_ACCOUNT_ID)

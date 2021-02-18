@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @RequiredArgsConstructor
 @Repository
-public class CustomMemberRepository {
+public class MemberRepositoryCustom {
 	public final MemberRepository memberRepository;
 
 	public Member findByUserId(String userId) {

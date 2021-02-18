@@ -4,8 +4,8 @@ import com.fakebook.dongheon.comment.domain.Comment;
 import com.fakebook.dongheon.comment.domain.CustomCommentRepository;
 import com.fakebook.dongheon.comment.exception.CommentNotFoundException;
 import com.fakebook.dongheon.comment.web.dto.CommentRegisterDto;
-import com.fakebook.dongheon.member.domain.CustomMemberRepository;
 import com.fakebook.dongheon.member.domain.Member;
+import com.fakebook.dongheon.member.domain.MemberRepositoryCustom;
 import com.fakebook.dongheon.member.web.dto.MemberRegisterDto;
 import com.fakebook.dongheon.post.domain.CustomPostRepository;
 import com.fakebook.dongheon.post.domain.Post;
@@ -31,7 +31,7 @@ public class CommentServiceTest {
 	private static Long testPostId;
 
 	@Autowired
-	private CustomMemberRepository customMemberRepository;
+	private MemberRepositoryCustom memberRepositoryCustom;
 
 	@Autowired
 	private CustomPostRepository customPostRepository;
@@ -51,8 +51,8 @@ public class CommentServiceTest {
 		memberDto.setUserId(ANOTHER_PERSON_ACCOUNT_ID);
 		Member anotherPersonAccount = memberDto.toEntity();
 
-		customMemberRepository.save(myAccount);
-		customMemberRepository.save(anotherPersonAccount);
+		memberRepositoryCustom.save(myAccount);
+		memberRepositoryCustom.save(anotherPersonAccount);
 
 		Post post = getTestPostRegisterDto().toEntity(myAccount);
 		testPostId = customPostRepository.save(post).getId();
@@ -61,7 +61,7 @@ public class CommentServiceTest {
 	@AfterAll
 	void deleteMemberAndPost() {
 		customPostRepository.deleteAll();
-		customMemberRepository.deleteAll();
+		memberRepositoryCustom.deleteAll();
 	}
 
 	@AfterEach

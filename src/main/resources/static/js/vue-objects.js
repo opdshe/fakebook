@@ -351,17 +351,33 @@ Vue.component('profile', {
 
 //채팅창
 Vue.component('chat-card', {
-    props: ['target', 'user'],
+    props: ['target', 'user', 'messages'],
     template:
         '<div id="chat-tab" class = "chat-tab">\n' +
         '   <div class="chat-profile">\n' +
         '        <img class="profile-img" style="border-radius: 10px" src="/images/default/profile-default.png" alt="">\n' +
-        '        <span class="name pdd-right-5 text-black text-bold" style=" cursor: pointer">{{target}}</span>\n' +
+        '        <span class="name pdd-right-5 text-black text-bold" style=" cursor: pointer">{{target.name}}</span>\n' +
         '        <hr style="color: black;">\n' +
         '   </div>\n' +
-        '   <ul id="messages" class="chat-box">\n' +
+        '   <ul id="messages" class="chat-box" style="overflow:scroll">\n' +
+        '       <div v-for="message in messages" style="display: block">\n' +
+        '           <div v-if="message.receiverId==user.id">\n' +
+        '               <div style="width: 100%; display: inline-block;">' +
+        '                   <div class="your-chat">\n' +
+        '                       <span class="chat-message" style="float:left">{{message.content}}</span>\n' +
+        '                   </div>\n' +
+        '               </div>\n' +
+        '           </div>' +
+        '           <div v-else>' +
+        '               <div style="width: 100%; display: inline-block">' +
+        '                   <div  class="my-chat">\n' +
+        '                       <span class="chat-message" style="float: right;">{{message.content}}</span>\n' +
+        '                   </div>\n' +
+        '               </div>' +
+        '           </div>' +
+        '       </div>' +
         '   </ul>\n' +
-        '   <form id="chat-form" style="height: 30px; width: 100%; position: relative;">\n' +
+        '   <form id="chat-form" style="height: 30px; width: 100%; margin-top:20px; position: relative;">\n' +
         '       <textarea id ="message" rows="1" placeholder="메세지를 입력하세요.." style="width: 85%; height: 100%; float: left;"></textarea>\n' +
         '       <input id="send" type="submit"  value="전송" style="width: 13%; height:100%; margin-left:2% ">\n' +
         '   </form>\n' +

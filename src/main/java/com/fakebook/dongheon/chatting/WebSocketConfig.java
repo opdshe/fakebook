@@ -1,4 +1,4 @@
-package com.fakebook.dongheon.message;
+package com.fakebook.dongheon.chatting;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

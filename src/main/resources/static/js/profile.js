@@ -44,17 +44,38 @@ function hideChatTabIfUserIsTarget() {
     }
 }
 
+async function initChat() {
+    await axios.post('/create-chatroom/' + profile.target.id)
+        .then(function (response) {
+            console.log("채팅방 생성 성공");
+        }).catch(function (error) {
+            alert(error.response.data.message);
+        });
+    await axios.get('/fetch-messages/' + profile.target.id)
+        .then(function (response) {
+            profile.messages = response.data;
+            console.log(response.data);
+        }).catch(function (error) {
+            console.log(error.response.data.message);
+        })
+}
+
+async function init() {
+    await initProfile()
+    await initProfilePosts()
+    await initChat()
+}
+
 profile = new Vue({
     el: '#fakebook-app',
     data: {
         target: '',
         posts: '',
-        user: ''
+        user: '',
+        messages: ''
     }
 })
-
-initProfile()
-initProfilePosts()
+init()
 
 let stomp = {
     connect: function () {
@@ -65,7 +86,7 @@ let stomp = {
         stompClient.connect({}, function (frame) {
             console.log('Connected: ' + frame);
             stompClient.subscribe('/queue/' + profile.user.id, function (chatMessage) {
-                _this.showMessage(JSON.parse(chatMessage.body).content);
+                _this.showMessage(JSON.parse(chatMessage.body));
             });
         });
     },
@@ -82,15 +103,30 @@ let stomp = {
         let _this = this;
         let content = $('#message').val();
         let message = {
-            'sender': profile.user.id,
-            'receiver': profile.target.id,
+            'senderId': profile.user.id,
+            'receiverId': profile.target.id,
             'content': content,
         };
         stompClient.send("/app/send", {}, JSON.stringify(message));
-        _this.showMessage(content);
+        _this.showMessage(message);
     },
     showMessage: function (message) {
-        $("#messages").append("<tr><td>" + message + "</td></tr>");
+        let receiver = message.receiverId
+        let sender = message.senderId
+        if (!((receiver === profile.user.id && sender === profile.target.id) ||
+            receiver === profile.target.id && sender === profile.user.id)) {
+            return
+        }
+        if (profile.user.id !== receiver) {
+            $("#messages").append("<div style=\"width: 100%; display: inline-block\">" +
+                "<div  class=\"my-chat\"><span class=\"chat-message\" style=\"float: right;\">" + message.content + "</span>" +
+                "</div></div>");
+        } else {
+            $("#messages").append("<div style=\"width: 100%; display: inline-block\">" +
+                "<div  class=\"your-chat\"><span class=\"chat-message\" style=\"float: left;\">" + message.content + "</span>" +
+                "</div></div>");
+        }
+
     }
 }
 stomp.connect();
