@@ -1,8 +1,8 @@
 package com.fakebook.dongheon.member.web.controller;
 
-import com.fakebook.dongheon.member.domain.CustomMemberRepository;
 import com.fakebook.dongheon.member.domain.Gender;
 import com.fakebook.dongheon.member.domain.Member;
+import com.fakebook.dongheon.member.domain.MemberRepositoryCustom;
 import com.fakebook.dongheon.member.service.MemberService;
 import com.fakebook.dongheon.member.web.dto.MemberRegisterDto;
 import com.fakebook.dongheon.post.domain.CustomPostRepository;
@@ -38,7 +38,7 @@ class MemberApiControllerTest {
 	WebApplicationContext context;
 
 	@Autowired
-	private CustomMemberRepository customMemberRepository;
+	private MemberRepositoryCustom memberRepositoryCustom;
 
 	@Autowired
 	private CustomPostRepository customPostRepository;
@@ -55,12 +55,12 @@ class MemberApiControllerTest {
 				.apply(springSecurity())
 				.build();
 		customPostRepository.deleteAll();
-		customMemberRepository.deleteAll();
+		memberRepositoryCustom.deleteAll();
 	}
 
 	@AfterEach
 	public void clearUp() {
-		customMemberRepository.deleteAll();
+		memberRepositoryCustom.deleteAll();
 	}
 
 	@Test
@@ -74,7 +74,7 @@ class MemberApiControllerTest {
 		mvc.perform(post(url)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(memberJson));
-		boolean isExistUserId = customMemberRepository.isExistUserId(dto.getUserId());
+		boolean isExistUserId = memberRepositoryCustom.isExistUserId(dto.getUserId());
 
 		//then
 		assertThat(isExistUserId).isTrue();
@@ -95,7 +95,7 @@ class MemberApiControllerTest {
 
 		//when
 		mvc.perform(delete(DELETE_URL + "/{id}", id));
-		boolean isExistUserId = customMemberRepository.isExistUserId(dto.getUserId());
+		boolean isExistUserId = memberRepositoryCustom.isExistUserId(dto.getUserId());
 
 		//then
 		assertThat(isExistUserId).isFalse();
@@ -119,7 +119,7 @@ class MemberApiControllerTest {
 		mvc.perform(post(UPDATE_URL + "/{id}", id)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(new ObjectMapper().writeValueAsString(editedDto)));
-		Member editedMember = customMemberRepository.findById(id);
+		Member editedMember = memberRepositoryCustom.findById(id);
 
 		//then
 		assertThat(editedMember.getUserId()).isEqualTo(editedUserId);
@@ -138,8 +138,8 @@ class MemberApiControllerTest {
 
 		//when
 		mvc.perform(post("/member/friend/{id}", friendMemberId));
-		Member myAccount = customMemberRepository.findWithFriendsById(myMemberId);
-		Member friendAccount = customMemberRepository.findWithFriendsById(friendMemberId);
+		Member myAccount = memberRepositoryCustom.findWithFriendsById(myMemberId);
+		Member friendAccount = memberRepositoryCustom.findWithFriendsById(friendMemberId);
 
 		//then
 		assertThat(myAccount.getFriends()).contains(friendAccount);
@@ -161,8 +161,8 @@ class MemberApiControllerTest {
 
 		//when
 		mvc.perform(delete("/member/friend/{id}", friendMemberId));
-		Member myAccount = customMemberRepository.findWithFriendsById(myMemberId);
-		Member friendAccount = customMemberRepository.findWithFriendsById(friendMemberId);
+		Member myAccount = memberRepositoryCustom.findWithFriendsById(myMemberId);
+		Member friendAccount = memberRepositoryCustom.findWithFriendsById(friendMemberId);
 
 		//then
 		assertThat(myAccount.getFriends()).doesNotContain(friendAccount);

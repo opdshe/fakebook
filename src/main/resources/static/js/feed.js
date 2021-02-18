@@ -1,14 +1,4 @@
-var feed = new Vue({
-    el: '#fakebook-app',
-    data: {
-        user: '',
-        placeholder: '',
-        posts: ''
-    }
-})
-
-initFeedData()
-initPosts()
+let feed = null;
 
 function initFeedData() {
     getLoginUserName()
@@ -29,3 +19,17 @@ function initPosts() {
         alert(error.response.data.message);
     });
 }
+
+feed = new Vue({
+    el: '#fakebook-app',
+    data: {
+        user: '',
+        placeholder: '',
+        posts: ''
+    }
+})
+
+initFeedData()
+initPosts()
+
+

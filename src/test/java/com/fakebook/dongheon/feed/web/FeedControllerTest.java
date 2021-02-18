@@ -1,6 +1,6 @@
 package com.fakebook.dongheon.feed.web;
 
-import com.fakebook.dongheon.member.domain.CustomMemberRepository;
+import com.fakebook.dongheon.member.domain.MemberRepositoryCustom;
 import com.fakebook.dongheon.post.domain.CustomPostRepository;
 import com.fakebook.dongheon.security.SecurityConfig;
 import com.fakebook.dongheon.security.service.CustomUserDetailsService;
@@ -22,7 +22,7 @@ class FeedControllerTest {
 	private MockMvc mockMvc;
 
 	@MockBean
-	private CustomMemberRepository customMemberRepository;
+	private MemberRepositoryCustom memberRepositoryCustom;
 
 	@MockBean
 	private CustomPostRepository customPostRepository;
