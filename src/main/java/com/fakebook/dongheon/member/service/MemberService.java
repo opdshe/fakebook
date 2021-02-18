@@ -1,7 +1,7 @@
 package com.fakebook.dongheon.member.service;
 
-import com.fakebook.dongheon.member.domain.CustomMemberRepository;
 import com.fakebook.dongheon.member.domain.Member;
+import com.fakebook.dongheon.member.domain.MemberRepositoryCustom;
 import com.fakebook.dongheon.member.exception.AlreadyExistMemberIdException;
 import com.fakebook.dongheon.member.web.dto.MemberRegisterDto;
 import com.fakebook.dongheon.member.web.dto.MemberResponseDto;
@@ -13,9 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class MemberService {
-	private final CustomMemberRepository memberRepository;
+	private final MemberRepositoryCustom memberRepository;
 
-	public MemberService(CustomMemberRepository memberRepository) {
+	public MemberService(MemberRepositoryCustom memberRepository) {
 		this.memberRepository = memberRepository;
 	}
 

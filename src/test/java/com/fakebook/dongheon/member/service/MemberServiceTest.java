@@ -1,8 +1,8 @@
 package com.fakebook.dongheon.member.service;
 
-import com.fakebook.dongheon.member.domain.CustomMemberRepository;
 import com.fakebook.dongheon.member.domain.Gender;
 import com.fakebook.dongheon.member.domain.Member;
+import com.fakebook.dongheon.member.domain.MemberRepositoryCustom;
 import com.fakebook.dongheon.member.exception.AlreadyExistMemberIdException;
 import com.fakebook.dongheon.member.exception.MemberNotFoundException;
 import com.fakebook.dongheon.member.web.dto.MemberRegisterDto;
@@ -26,7 +26,7 @@ public class MemberServiceTest {
 	private static final String FRIEND_USER_ID = "friend";
 
 	@Autowired
-	private CustomMemberRepository customMemberRepository;
+	private MemberRepositoryCustom memberRepositoryCustom;
 
 	@Autowired
 	private CustomPostRepository customPostRepository;
@@ -37,12 +37,12 @@ public class MemberServiceTest {
 	@BeforeAll
 	void setUp() {
 		customPostRepository.deleteAll();
-		customMemberRepository.deleteAll();
+		memberRepositoryCustom.deleteAll();
 	}
 
 	@AfterEach
 	void clearUp() {
-		customMemberRepository.deleteAll();
+		memberRepositoryCustom.deleteAll();
 	}
 
 	@Test
@@ -52,7 +52,7 @@ public class MemberServiceTest {
 
 		//when
 		memberService.register(dto);
-		Member member = customMemberRepository.findByUserId(dto.getUserId());
+		Member member = memberRepositoryCustom.findByUserId(dto.getUserId());
 
 		//then
 		assertThat(member).isEqualTo(dto.toEntity());
@@ -78,12 +78,12 @@ public class MemberServiceTest {
 		MemberRegisterDto updateMember = getTestMemberDto();
 		updateMember.setUserId(anotherId);
 
-		customMemberRepository.save(originMember.toEntity());
-		Long id = customMemberRepository.findByUserId(originMember.getUserId()).getId();
+		memberRepositoryCustom.save(originMember.toEntity());
+		Long id = memberRepositoryCustom.findByUserId(originMember.getUserId()).getId();
 
 		//when
 		memberService.update(id, updateMember);
-		Member member = customMemberRepository.findById(id);
+		Member member = memberRepositoryCustom.findById(id);
 
 		//then
 		assertThat(member.getUserId()).isEqualTo(anotherId);
@@ -95,8 +95,8 @@ public class MemberServiceTest {
 		String duplicatedId = MY_USER_ID;
 		MemberRegisterDto originMember = getTestMemberDto();
 		MemberRegisterDto updateMember = getTestMemberDto();
-		customMemberRepository.save(originMember.toEntity());
-		Long id = customMemberRepository.findByUserId(duplicatedId).getId();
+		memberRepositoryCustom.save(originMember.toEntity());
+		Long id = memberRepositoryCustom.findByUserId(duplicatedId).getId();
 
 		//when & then
 		assertThatExceptionOfType(AlreadyExistMemberIdException.class)
@@ -109,14 +109,14 @@ public class MemberServiceTest {
 		//given
 		MemberRegisterDto registerDto = getTestMemberDto();
 		memberService.register(registerDto);
-		Long id = customMemberRepository.findByUserId(registerDto.getUserId()).getId();
+		Long id = memberRepositoryCustom.findByUserId(registerDto.getUserId()).getId();
 
 		//when
 		memberService.delete(id);
 
 		//then
 		assertThatExceptionOfType(MemberNotFoundException.class)
-				.isThrownBy(() -> customMemberRepository.findById(id));
+				.isThrownBy(() -> memberRepositoryCustom.findById(id));
 	}
 
 	@WithMockUser(username = "invalidUserID")
@@ -125,7 +125,7 @@ public class MemberServiceTest {
 		//given
 		MemberRegisterDto registerDto = getTestMemberDto();
 		memberService.register(registerDto);
-		Long id = customMemberRepository.findByUserId(registerDto.getUserId()).getId();
+		Long id = memberRepositoryCustom.findByUserId(registerDto.getUserId()).getId();
 
 		//when & then
 		assertThatExceptionOfType(NotAuthorizedException.class)
@@ -145,8 +145,8 @@ public class MemberServiceTest {
 
 		//when
 		memberService.befriend(friendMemberId, MY_USER_ID);
-		Member myAccount = customMemberRepository.findWithFriendsById(myMemberId);
-		Member friendAccount = customMemberRepository.findWithFriendsById(friendMemberId);
+		Member myAccount = memberRepositoryCustom.findWithFriendsById(myMemberId);
+		Member friendAccount = memberRepositoryCustom.findWithFriendsById(friendMemberId);
 
 		//then
 		assertThat(myAccount.getFriends()).contains(friendAccount);
@@ -168,8 +168,8 @@ public class MemberServiceTest {
 
 		//when
 		memberService.unfriend(friendMemberId, MY_USER_ID);
-		Member myAccount = customMemberRepository.findWithFriendsById(myMemberId);
-		Member friendAccount = customMemberRepository.findWithFriendsById(friendMemberId);
+		Member myAccount = memberRepositoryCustom.findWithFriendsById(myMemberId);
+		Member friendAccount = memberRepositoryCustom.findWithFriendsById(friendMemberId);
 
 		//then
 		assertThat(myAccount.getFriends()).doesNotContain(friendAccount);
