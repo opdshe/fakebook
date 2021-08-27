@@ -1,5 +1,8 @@
 package com.fakebook.dongheon.security;
 
+import com.fakebook.dongheon.security.handler.LogOutSuccessHandler;
+import com.fakebook.dongheon.security.handler.LoginFailureHandler;
+import com.fakebook.dongheon.security.handler.LoginSuccessHandler;
 import com.fakebook.dongheon.security.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +19,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private final CustomUserDetailsService customUserDetailsService;
+	private final LoginFailureHandler loginFailureHandler;
+	private final LogOutSuccessHandler logOutSuccessHandler;
+	private final LoginSuccessHandler loginSuccessHandler;
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {
@@ -32,10 +38,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.formLogin()
 				.loginPage("/")
 				.loginProcessingUrl("/login")
+				.successHandler(loginSuccessHandler)
+				.usernameParameter("userId")
 				.defaultSuccessUrl("/feed")
-				.failureUrl("/failure")
+				.failureUrl("/")
+				.failureHandler(loginFailureHandler)
 				.and()
-				.logout();
+				.logout()
+				.logoutSuccessHandler(logOutSuccessHandler);
 	}
 
 	@Bean
