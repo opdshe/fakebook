@@ -76,7 +76,7 @@ Vue.component('left-nav', {
         '            <ul class="left-sub-menus">\n' +
         '                <li class="left-sub-sub-menus mrg-btm-5 pointer">\n' +
         '                    <div class="icons newspeed"></div>\n' +
-        '                    <span class="icon-name">  뉴스피드</span>\n' +
+        '                    <a href="/feed"><span class="icon-name">뉴스피드</span></a>\n' +
         '                </li>\n' +
         '                <li class="left-sub-sub-menus mrg-btm-5 pointer">\n' +
         '                    <div class="icons message"></div>\n' +
