@@ -19,7 +19,38 @@ let index = {
     init: function () {
         let _this = this;
         initCalender()
+        _this.initLogin()
         _this.initJoin();
+    },
+    initLogin: function () {
+        new Vue({
+            el: "#login-form",
+            data: {
+                userId: '',
+                password: ''
+            },
+            methods: {
+                validateLoginInput() {
+                    if(this.userId ==='' || this.password === '') {
+                        alert('아이디와 비밀번호를 확인해주세요.')
+                    }
+                },
+                login() {
+                    console.log("login start")
+                    const loginData = new FormData()
+                    loginData.append("userId", this.userId)
+                    loginData.append("password", this.password)
+                    axios.post('/login', loginData)
+                        .then(function (response) {
+                            console.log('응답')
+                            console.log(response);
+                        }).catch(function (error) {
+                        console.log("failed")
+                        alert(error.response.data.message);
+                    });
+                }
+            }
+        })
     },
     initJoin: function () {
         new Vue({

@@ -3,6 +3,9 @@ package com.fakebook.dongheon.feed.web;
 import com.fakebook.dongheon.member.domain.MemberRepositoryCustom;
 import com.fakebook.dongheon.post.domain.CustomPostRepository;
 import com.fakebook.dongheon.security.SecurityConfig;
+import com.fakebook.dongheon.security.handler.LogOutSuccessHandler;
+import com.fakebook.dongheon.security.handler.LoginFailureHandler;
+import com.fakebook.dongheon.security.handler.LoginSuccessHandler;
 import com.fakebook.dongheon.security.service.CustomUserDetailsService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +32,15 @@ class FeedControllerTest {
 
 	@MockBean
 	private CustomUserDetailsService userDetailsService;
+
+	@MockBean
+	private LoginFailureHandler loginFailureHandler;
+
+	@MockBean
+	private LoginSuccessHandler loginSuccessHandler;
+
+	@MockBean
+	private LogOutSuccessHandler logOutSuccessHandler;
 
 	@Test
 	void Feed_페이지_호출_동작_확인() throws Exception {
